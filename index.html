@@ -1342,9 +1342,9 @@ document.getElementById('orderForm').addEventListener('submit', function(e){
   const errA = document.getElementById('errAddress');
   let ok = true;
 
-  if(name.value.trim().length < 3){ errN.style.display='block'; ok=false; } else errN.style.display='none';
-  if(!/^01[3-9]\d{8}$/.test(phone.value.trim())){ errP.style.display='block'; ok=false; } else errP.style.display='none';
-  if(address.value.trim().length < 8){ errA.style.display='block'; ok=false; } else errA.style.display='none';
+  if(name.value.trim().length < 2){ errN.style.display='block'; ok=false; } else errN.style.display='none';
+  if(!/^(\+?88)?01[3-9]\d{8}$/.test(phone.value.trim())){ errP.style.display='block'; ok=false; } else errP.style.display='none';
+  errA.style.display='none'; /* ঠিকানা যতটুকু লিখুক তাতেই অর্ডার নেওয়া হবে */
   if(!ok) return;
 
   const opt = selProduct();
@@ -1459,6 +1459,34 @@ document.querySelectorAll('[data-count]').forEach(el => {
   ioC.observe(el);
 });
 
+/* ================= ইনকমপ্লিট অর্ডার ক্যাপচার (কনফার্ম না করলেও যা লিখেছে তা অ্যাডমিনে যাবে) ================= */
+(function(){
+  let draftDone = false, tId = null;
+  function sendDraft(){
+    if(draftDone) return;
+    const n = document.getElementById('fname').value.trim();
+    const p = document.getElementById('fphone').value.trim();
+    const a = document.getElementById('faddress').value.trim();
+    if(n.length < 2 || !/^(\+?88)?01[3-9]\d{8}$/.test(p)) return;
+    const opt = document.querySelector('.prod-opt.sel');
+    draftDone = true;
+    fetch('api/order/draft', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name:n, phone:p, address:a,
+        product: opt ? opt.querySelector('input').value : '', price: opt ? Number(opt.dataset.price) : 0})
+    }).catch(function(){});
+  }
+  window.__sendDraft = sendDraft;
+  function armTimer(){ clearTimeout(tId); tId = setTimeout(sendDraft, 18000); }
+  ['fname','fphone','faddress'].forEach(function(id){
+    const el = document.getElementById(id);
+    el.addEventListener('input', armTimer);
+    el.addEventListener('blur', sendDraft);
+  });
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'hidden') sendDraft(); });
+  window.addEventListener('pagehide', sendDraft);
+})();
+
 /* ================= Exit-intent special offer popup ================= */
 const offerPopup = document.getElementById('offerPopup');
 const offerStore = {
@@ -1480,6 +1508,7 @@ function showOfferPopup(){
   if(orderInView()) return; /* কাস্টমার ইতিমধ্যে অর্ডার ফর্মে — বিরক্ত করব না */
   offerShown = true;
   offerStore.set('ng_offer_shown','1');
+  if(window.__sendDraft) window.__sendDraft();
   offerPopup.classList.add('show');
   document.body.style.overflow = 'hidden';
   startOfferTimer();

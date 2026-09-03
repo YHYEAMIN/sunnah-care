@@ -18,7 +18,7 @@
   .wrap{width:min(1280px,95%);margin:0 auto}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;border:none;
     font-family:inherit;font-weight:600;font-size:.92rem;border-radius:999px;padding:9px 18px;
-    background:linear-gradient(135deg,#17a47b,#0e7a58);color:#fff;box-shadow:0 6px 16px rgba(14,122,88,.28);transition:.2s}
+    background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;box-shadow:0 6px 16px rgba(14,122,88,.28);transition:.2s}
   .btn:hover{transform:translateY(-2px)}
   .btn-gold{background:linear-gradient(135deg,var(--gold-2),#c89012);box-shadow:0 6px 16px rgba(217,165,33,.32)}
   .btn-red{background:linear-gradient(135deg,#e0604e,#c0392b)}
@@ -67,7 +67,7 @@
   .dtab{padding:7px 18px;border-radius:999px;border:1.5px solid var(--line);background:#fff;cursor:pointer;
     font-family:inherit;font-size:.9rem;font-weight:600;color:var(--muted);transition:.2s}
   .dtab:hover{border-color:var(--gold)}
-  .dtab.on{background:linear-gradient(135deg,#17a47b,#0e7a58);color:#fff;border-color:transparent;box-shadow:0 6px 14px rgba(14,122,88,.28)}
+  .dtab.on{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;border-color:transparent;box-shadow:0 6px 14px rgba(14,122,88,.28)}
   .dtabs input[type=date]{padding:6px 10px;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;display:none}
 
   /* ---------- Stat widgets ---------- */
@@ -77,6 +77,7 @@
   .st:hover{transform:translateY(-4px);border-color:var(--gold)}
   .st::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold-2),var(--green-2))}
   .st .v{font-size:1.3rem;font-weight:700;color:var(--green)}
+  .chip b{color:var(--green)}
   .st .l{font-size:.76rem;color:var(--muted)}
   .st.gold .v{color:#b8860b}.st.red .v{color:var(--red)}.st.blue .v{color:#075985}
 
@@ -117,9 +118,11 @@
   .b-hold{background:#fef3c7;color:#b45309}.b-cancel{background:#fde8e8;color:#b91c1c}
   .b-return{background:#ffe4e6;color:#be123c}.b-noanswer{background:#f1f5f9;color:#475569}
   .b-refunded{background:#e0f2fe;color:#0369a1}
+  .b-incomplete{background:#eef1f5;color:#475569;border:1px dashed #cbd5e1}
   .b-manual{background:#f3e8ff;color:#7e22ce}
   .oc-phone{direction:ltr;text-align:right}
   .oc-phone a{color:var(--green);font-weight:700;text-decoration:none;font-size:1rem}
+  .o-id{color:var(--muted)}
   .oc-meta{font-size:.88rem;color:#3d4c44;margin-top:2px}
   .oc-meta b{color:var(--green-dark)}
   .oc-addr{font-size:.83rem;color:var(--muted);margin-top:3px;line-height:1.55}
@@ -139,8 +142,8 @@
   .tbl-scroll{overflow-x:auto}
   table{width:100%;border-collapse:collapse;min-width:960px}
   th,td{padding:11px 12px;text-align:right;font-size:.88rem;border-bottom:1px solid var(--line);white-space:nowrap}
-  thead th{background:var(--green-soft);color:var(--green-dark);font-size:.82rem}
-  tbody tr:hover{background:#f3faf6}
+  thead th{background:var(--green-soft);color:var(--green-dark);font-size:.82rem;border-bottom:2px solid var(--gold)}
+  tbody tr:hover{background:var(--green-soft)}
   .o-id{color:var(--muted);font-size:.78rem;direction:ltr}
 
   .empty{padding:56px 20px;text-align:center;color:var(--muted);background:#fff;border:1.5px dashed var(--line);border-radius:var(--radius)}
@@ -222,6 +225,7 @@
       <span id="demoBanner" style="display:none;background:#fdf3d4;border:1.5px solid #e3cd92;color:#9a7b0e;font-weight:700;font-size:.8rem;border-radius:999px;padding:4px 12px;align-items:center">⚠️ ডেমো মোড — নমুনা ডেটা</span>
       <span class="tb-chip" id="newChip"><span class="dot"></span> নতুন অর্ডার 🚩 <b id="newChipN"></b></span>
       <span class="sp"></span>
+      <button class="btn btn-sm btn-ghost" id="themeBtn">🎨 থিম</button>
       <button class="btn btn-sm btn-ghost" id="pdfBtn">🖨 পিডিএফ</button>
       <button class="btn btn-sm btn-ghost" id="widgetBtn">🧩 উইজেট</button>
       <button class="btn btn-sm btn-ghost" id="csvBtn">📄 CSV</button>
@@ -250,6 +254,7 @@
       <div class="st gold" data-w="revenue"><div class="v" id="stRevenue">৳০</div><div class="l">বিক্রি</div></div>
       <div class="st red" data-w="return"><div class="v" id="stReturn">০</div><div class="l">রিটার্ন</div></div>
       <div class="st red" data-w="cancel"><div class="v" id="stCancel">০</div><div class="l">বাতিল</div></div>
+      <div class="st" data-w="incomplete"><div class="v" id="stIncomplete" style="color:#64748b">০</div><div class="l">ইনকমপ্লিট</div></div>
     </div>
 
     <div class="summary" id="summaryRow"></div>
@@ -349,14 +354,26 @@
   </div>
 </div>
 
+<div class="modal-ov" id="themeModal">
+  <div class="modal" style="width:min(560px,100%)">
+    <h3>🎨 থিম বাছাই করুন — ১৫টি কালার কম্বিনেশন</h3>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:12px">যেটায় ক্লিক করবেন সাথে সাথে পুরো প্যানেল সেটায় বদলে যাবে — পছন্দেরটা সেভ হয়ে থাকবে</p>
+    <div id="themeGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+    <div class="mrow" style="justify-content:space-between">
+      <button class="btn btn-sm btn-ghost" id="themeReset">↺ ডিফল্টে ফেরান</button>
+      <button class="btn btn-sm btn-gold" data-close>✅ ঠিক আছে</button>
+    </div>
+  </div>
+</div>
+
 <div id="printArea"></div>
 <div class="toast" id="toast"></div>
 
 <script>
 /* ================= Config ================= */
-const STATUS_BN = {pending:'পেন্ডিং',confirmed:'কনফার্মড',shipping:'শিপিং',delivered:'ডেলিভারড',
+const STATUS_BN = {incomplete:'ইনকমপ্লিট',pending:'পেন্ডিং',confirmed:'কনফার্মড',shipping:'শিপিং',delivered:'ডেলিভারড',
                    hold:'হোল্ড',cancel:'বাতিল',return:'রিটার্ন',noanswer:'নো আনসার',refunded:'রিফান্ডেড'};
-const STATUS_CLS = {pending:'b-pending',confirmed:'b-confirmed',shipping:'b-shipping',delivered:'b-delivered',
+const STATUS_CLS = {incomplete:'b-incomplete',pending:'b-pending',confirmed:'b-confirmed',shipping:'b-shipping',delivered:'b-delivered',
                     hold:'b-hold',cancel:'b-cancel',return:'b-return',noanswer:'b-noanswer',refunded:'b-refunded'};
 const MONTHS = ['জানু','ফেব','মার্চ','এপ্রি','মে','জুন','জুলা','আগ','সেপ','অক্টো','নভে','ডিসে'];
 const bn = s => String(s).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
@@ -480,7 +497,7 @@ async function loadOrders(silent){
   const d = await api('/api/orders');
   if(!d || !d.ok){ if(!silent) toast('❌ সার্ভারে সংযোগ ব্যর্থ'); return; }
   settings = d.settings || settings;
-  const fresh = d.orders.filter(o => !seenIds.has(o.id));
+  const fresh = d.orders.filter(o => !seenIds.has(o.id) && o.status !== 'incomplete');
   if(seenIds.size && fresh.length){
     $('newChip').style.display = 'inline-flex';
     $('newChipN').textContent = ' ' + bn(fresh.length) + 'টি';
@@ -543,6 +560,7 @@ function render(){
   $('stDelivered').textContent = bn(cnt('delivered'));
   $('stReturn').textContent = bn(cnt('return'));
   $('stCancel').textContent = bn(cnt('cancel'));
+  $('stIncomplete').textContent = bn(cnt('incomplete'));
   $('stRevenue').textContent = bnMoney(list.filter(o => o.status === 'delivered').reduce((a,o) => a + (+o.price||0), 0));
   $('dateCount').textContent = '· ' + bn(list.length) + 'টি অর্ডার';
 
@@ -704,7 +722,7 @@ $('tgSendToday').addEventListener('click', async () => {
 
 /* উইজেট */
 const WIDGETS = {total:'মোট', pending:'পেন্ডিং', confirmed:'কনফার্মড', shipping:'শিপিং',
-                 delivered:'ডেলিভারড', revenue:'বিক্রি', return:'রিটার্ন', cancel:'বাতিল'};
+                 delivered:'ডেলিভারড', revenue:'বিক্রি', return:'রিটার্ন', cancel:'বাতিল', incomplete:'ইনকমপ্লিট'};
 function getWidgets(){ try { return JSON.parse(readStore('ng_widgets')) || Object.keys(WIDGETS); } catch(e){ return Object.keys(WIDGETS); } }
 function applyWidgets(){
   let on = [...$('widgetList').querySelectorAll('input:checked')].map(c => c.value);
@@ -720,6 +738,49 @@ $('widgetBtn').addEventListener('click', () => {
   $('widgetModal').classList.add('show');
 });
 applyWidgets();
+
+/* ---------- ১৫টি থিম ---------- */
+const THEMES = {
+ t1:{n:'🌿 সবুজ-সোনালি', v:['#17a47b','#0a5c44','#073d2e','#e8f4ee','#d9a521','#f0c04a','#f6faf7','#dfe9e2']},
+ t2:{n:'🌲 গাঢ় অরণ্য', v:['#2e7d32','#1b5e20','#0d3311','#e6f2e6','#c8a415','#e6c832','#f4faf4','#d8e8d8']},
+ t3:{n:'🍍 টিল-অ্যাম্বার', v:['#14b8a6','#0d9488','#0f5148','#e3f6f3','#f59e0b','#fbbf24','#f5fbfa','#d5ecea']},
+ t4:{n:'🌊 ওশান ব্লু', v:['#3b82f6','#1d4ed8','#16309b','#e8f0fd','#f59e0b','#fbbf24','#f6f9fe','#dbe6f8']},
+ t5:{n:'👑 রয়েল ইন্ডিগো', v:['#6366f1','#4f46e5','#2e2a86','#ecedfd','#f59e0b','#fbbf24','#f7f8fe','#e0e0f9']},
+ t6:{n:'🟣 বেগুনি-সোনালি', v:['#a855f7','#7c3aed','#4c1d95','#f3e8fd','#fbbf24','#fde68a','#fbf7fe','#eadcf8']},
+ t7:{n:'🌺 ম্যাজেন্টা', v:['#ec4899','#be185d','#701a3a','#fde8f0','#f59e0b','#fbbf24','#fef7fa','#f8dce7']},
+ t8:{n:'🌹 রোজ পিংক', v:['#fb7185','#e11d48','#7f1d2d','#ffe9ec','#f59e0b','#fcd34d','#fff8f8','#f9dde0']},
+ t9:{n:'🍒 মেরুন-গোল্ড', v:['#dc2626','#991b1b','#5b1010','#fbe9e9','#f59e0b','#fbbf24','#fdf7f7','#f2d9d9']},
+ t10:{n:'🍊 কমলা-হলুদ', v:['#fb923c','#ea580c','#7c2d12','#fdeee3','#facc15','#fde047','#fff9f2','#f5e0cf']},
+ t11:{n:'☕ কফি-ব্রাউন', v:['#b45309','#92400e','#4a2306','#f7ede0','#d9a521','#f0c04a','#faf6f0','#e8d9c8']},
+ t12:{n:'❄️ স্লেট-স্কাই', v:['#475569','#334155','#1e293b','#eef2f7','#38bdf8','#7dd3fc','#f5f8fb','#d9e1ea']},
+ t13:{n:'🖤 মনো ক্লাসিক', v:['#6b7280','#374151','#111827','#eef0f3','#9ca3af','#d1d5db','#f7f8f9','#e2e5e9']},
+ t14:{n:'🥑 অলিভ-লাইম', v:['#84cc16','#4d7c0f','#2a4011','#eef6dd','#f59e0b','#fbbf24','#fbfdf3','#e3ecc9']},
+ t15:{n:'🥇 গোল্ড-টিল', v:['#d4a017','#b8860b','#5c4406','#faf3df','#0f766e','#14b8a6','#fdfaf2','#eadfc0']}
+};
+const THEME_KEYS = ['--green-2','--green','--green-dark','--green-soft','--gold','--gold-2','--cream','--line'];
+function applyTheme(id){
+  const t = THEMES[id]; if(!t) return;
+  const s = document.documentElement.style;
+  t.v.forEach((c, i) => s.setProperty(THEME_KEYS[i], c));
+  store('ng_theme', id);
+  document.querySelectorAll('.theme-opt').forEach(b => b.style.borderColor = b.dataset.t === id ? 'var(--gold)' : 'var(--line)');
+}
+$('themeBtn').addEventListener('click', () => {
+  $('themeGrid').innerHTML = Object.keys(THEMES).map(k => {
+    const t = THEMES[k];
+    return '<button class="theme-opt" data-t="' + k + '" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;font-size:.88rem;font-weight:600;color:var(--ink);transition:.2s">' +
+      t.v.slice(0,4).map(c => '<span style="width:14px;height:14px;border-radius:50%;background:' + c + ';display:inline-block;border:1px solid rgba(0,0,0,.08)"></span>').join('') +
+      '<span>' + t.n + '</span></button>';
+  }).join('');
+  const cur = readStore('ng_theme') || 't1';
+  $('themeGrid').querySelectorAll('.theme-opt').forEach(b => {
+    b.addEventListener('click', () => applyTheme(b.dataset.t));
+    if(b.dataset.t === cur) b.style.borderColor = 'var(--gold)';
+  });
+  $('themeModal').classList.add('show');
+});
+$('themeReset').addEventListener('click', () => applyTheme('t1'));
+(function(){ const t = readStore('ng_theme'); if(t && THEMES[t]) applyTheme(t); })();
 
 /* কুরিয়ার */
 $('courierBtn').addEventListener('click', () => {

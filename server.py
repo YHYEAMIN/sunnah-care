@@ -12,11 +12,16 @@ import json, os, time, random, csv, io, urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse
 
-ROOT  = os.path.dirname(os.path.abspath(__file__))
-DATAF = os.path.join(ROOT, 'data', 'orders.json')
-SETTF = os.path.join(ROOT, 'data', 'settings.json')
+ROOT = os.path.dirname(os.path.abspath(__file__))
+# ডেটা কোথায় জমা হবে:
+#  ১) DATA_DIR এনভায়রনমেন্ট সেট করা থাকলে সেটাই (Render ডিস্কের জন্য)
+#  ২) নাহলে Render-এর ডিস্ক মাউন্ট /var/data থাকলে সেটাই (অটো-ডিটেক্ট)
+#  ৩) নাহলে রিপোর সাথে data ফোল্ডার (লোকাল/ফ্রি প্ল্যান)
+DATA_DIR = os.environ.get('DATA_DIR') or ('/var/data' if os.path.isdir('/var/data') else os.path.join(ROOT, 'data'))
+DATAF = os.path.join(DATA_DIR, 'orders.json')
+SETTF = os.path.join(DATA_DIR, 'settings.json')
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'sunnah2026')
-STATUSES = {'pending','confirmed','shipping','delivered','hold','cancel','return','noanswer','refunded'}
+STATUSES = {'incomplete','pending','confirmed','shipping','delivered','hold','cancel','return','noanswer','refunded'}
 
 def load_orders():
     try:
@@ -129,7 +134,32 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(400, {'ok': False}); return
             orders = load_orders()
             o = self._new_order(d, ip=ip)
-            orders.insert(0, o); self._send(200, {'ok': True, 'id': o['id']})
+            today = time.strftime('%Y-%m-%d')
+            for x in orders:
+                if x.get('status') == 'incomplete' and x.get('phone') == o.get('phone') and str(x.get('ts','')).startswith(today):
+                    x.update(o); x['status'] = 'pending'; o = x
+                    break
+            else:
+                orders.insert(0, o)
+            self._send(200, {'ok': True, 'id': o['id']})
+
+        elif p == '/api/order/draft':                            # পাবলিক: ইনকমপ্লিট (কনফার্ম করেনি)
+            ip = self._ip()
+            st = load_settings()
+            if ip in st.get('blocked_ips', []):
+                self._send(403, {'ok': False}); return
+            if not d.get('name') or not d.get('phone'):
+                self._send(400, {'ok': False}); return
+            orders = load_orders()
+            o = self._new_order(d, ip=ip, status='incomplete')
+            today = time.strftime('%Y-%m-%d')
+            for x in orders:
+                if x.get('status') == 'incomplete' and x.get('phone') == o.get('phone') and str(x.get('ts','')).startswith(today):
+                    x.update(o); x['status'] = 'incomplete'; o = x
+                    break
+            else:
+                orders.insert(0, o)
+            self._send(200, {'ok': True, 'id': o['id']})
 
         elif p == '/api/orders/add':                            # অ্যাডমিন: ম্যানুয়াল অর্ডার
             if not self._admin(): self._send(401, {'ok': False}); return
