@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>সুন্নাহ কেয়ার — প্রো অ্যাডমিন প্যানেল</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230a5c44'/%3E%3Cpath d='M40 16a17 17 0 1 0 8 27A19 19 0 0 1 40 16z' fill='%23f0c04a'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#0a5c44; --green-2:#17a47b; --green-dark:#073d2e; --green-soft:#e8f4ee;
+    --gold:#d9a521; --gold-2:#f0c04a; --cream:#f6faf7; --ink:#1c2b23; --muted:#5b6b62;
+    --line:#dfe9e2; --red:#c0392b; --radius:16px;
+    --shadow:0 8px 24px rgba(7,61,46,.09); --shadow-lg:0 18px 44px rgba(7,61,46,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Hind Siliguri',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh}
+  .wrap{width:min(1280px,95%);margin:0 auto}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;border:none;
+    font-family:inherit;font-weight:600;font-size:.92rem;border-radius:999px;padding:9px 18px;
+    background:linear-gradient(135deg,#17a47b,#0e7a58);color:#fff;box-shadow:0 6px 16px rgba(14,122,88,.28);transition:.2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-gold{background:linear-gradient(135deg,var(--gold-2),#c89012);box-shadow:0 6px 16px rgba(217,165,33,.32)}
+  .btn-red{background:linear-gradient(135deg,#e0604e,#c0392b)}
+  .btn-sm{padding:6px 13px;font-size:.84rem}
+  .btn-ghost{background:#fff;color:var(--green-dark);border:1.5px solid var(--line);box-shadow:none}
+
+  /* ---------- Login ---------- */
+  .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:
+    radial-gradient(700px 320px at 85% 0%,rgba(240,192,74,.25),transparent 60%),linear-gradient(150deg,#f4fbf7,#e3f2ea)}
+  .login-card{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-lg);
+    padding:42px 36px;width:min(420px,92%);text-align:center;position:relative;overflow:hidden;animation:pop .5s ease both}
+  @keyframes pop{from{opacity:0;transform:translateY(26px) scale(.95)}to{opacity:1;transform:none}}
+  .login-card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;
+    background:linear-gradient(90deg,var(--gold-2),var(--green-2),var(--gold-2))}
+  .login-logo{width:62px;height:62px;border-radius:50%;margin:0 auto 14px;
+    background:radial-gradient(circle at 30% 30%,var(--green-2),var(--green-dark));display:grid;place-items:center;
+    box-shadow:0 8px 20px rgba(10,92,68,.3)}
+  .login-card h1{font-size:1.4rem;color:var(--green-dark)}
+  .login-card p{color:var(--muted);font-size:.92rem;margin:4px 0 20px}
+  .login-card input{width:100%;padding:13px 16px;border:1.5px solid var(--line);border-radius:12px;font-size:1rem;
+    font-family:inherit;outline:none;text-align:center;transition:.2s}
+  .login-card input:focus{border-color:var(--green-2);box-shadow:0 0 0 4px rgba(23,164,123,.14)}
+  .login-err{color:var(--red);font-size:.9rem;margin-top:10px;display:none}
+  .pw-wrap{position:relative}
+  .pw-wrap .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;
+    font-size:1.15rem;cursor:pointer}
+  .hint{margin-top:12px;font-size:.82rem;color:var(--muted)}
+
+  /* ---------- Topbar ---------- */
+  .topbar{background:#fff;border-bottom:1.5px solid var(--line);position:sticky;top:0;z-index:40}
+  .topbar-in{display:flex;align-items:center;gap:10px;padding:10px 0;flex-wrap:wrap}
+  .topbar .lg{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--green-2),var(--green-dark));
+    display:grid;place-items:center;flex:0 0 auto}
+  .tb-title b{font-size:1.1rem;color:var(--green-dark);display:block;line-height:1.2}
+  .tb-title small{color:var(--muted);font-size:.78rem}
+  .tb-chip{background:#fde8e8;color:#b91c1c;font-weight:700;font-size:.8rem;border-radius:999px;
+    padding:4px 12px;display:none;align-items:center;gap:6px;animation:chipPulse 1.5s infinite}
+  @keyframes chipPulse{50%{transform:scale(1.06)}}
+  .tb-chip .dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+  .sp{margin-right:auto}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;animation:blink 1.6s infinite}
+  @keyframes blink{50%{opacity:.25}}
+
+  /* ---------- Date tabs ---------- */
+  .dtabs{display:flex;gap:8px;margin:18px 0 14px;flex-wrap:wrap;align-items:center}
+  .dtab{padding:7px 18px;border-radius:999px;border:1.5px solid var(--line);background:#fff;cursor:pointer;
+    font-family:inherit;font-size:.9rem;font-weight:600;color:var(--muted);transition:.2s}
+  .dtab:hover{border-color:var(--gold)}
+  .dtab.on{background:linear-gradient(135deg,#17a47b,#0e7a58);color:#fff;border-color:transparent;box-shadow:0 6px 14px rgba(14,122,88,.28)}
+  .dtabs input[type=date]{padding:6px 10px;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;display:none}
+
+  /* ---------- Stat widgets ---------- */
+  .stats{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin-bottom:14px}
+  .st{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;
+    position:relative;overflow:hidden;transition:.25s;box-shadow:var(--shadow)}
+  .st:hover{transform:translateY(-4px);border-color:var(--gold)}
+  .st::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold-2),var(--green-2))}
+  .st .v{font-size:1.3rem;font-weight:700;color:var(--green)}
+  .st .l{font-size:.76rem;color:var(--muted)}
+  .st.gold .v{color:#b8860b}.st.red .v{color:var(--red)}.st.blue .v{color:#075985}
+
+  /* ---------- Summary chips ---------- */
+  .summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .chip{background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;font-size:.83rem;
+    font-weight:600;color:var(--muted);cursor:pointer;transition:.2s}
+  .chip:hover{border-color:var(--gold)}
+  .chip.on{background:var(--green-dark);color:#fff;border-color:transparent}
+  .chip b{color:var(--green)} .chip.on b{color:var(--gold-2)}
+
+  /* ---------- Action bar ---------- */
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+
+  /* ---------- Search row ---------- */
+  .ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .ctrl input,.ctrl select{padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;
+    font-size:.95rem;outline:none;background:#fff}
+  .ctrl input{flex:1;min-width:180px}
+  .ctrl input:focus,.ctrl select:focus{border-color:var(--green-2)}
+  .vtoggle{display:flex;border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+  .vtoggle button{border:none;background:#fff;padding:9px 16px;cursor:pointer;font-family:inherit;font-size:.88rem;font-weight:600;color:var(--muted)}
+  .vtoggle button.on{background:var(--green-dark);color:#fff}
+
+  /* ---------- Order CARDS ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+  .ocard{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:16px 16px 12px;position:relative;overflow:hidden;transition:.25s;animation:cardIn .4s ease both}
+  @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .ocard:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:var(--shadow-lg)}
+  .ocard::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold-2),var(--green-2))}
+  .oc-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+  .oc-top b{font-size:1.02rem;color:var(--green-dark)}
+  .oc-date{margin-right:auto;font-size:.76rem;color:var(--muted)}
+  .badge{display:inline-block;padding:2px 11px;border-radius:999px;font-size:.74rem;font-weight:700;white-space:nowrap}
+  .b-pending{background:#fdf3d4;color:#9a7b0e}.b-confirmed{background:#e0f2fe;color:#075985}
+  .b-shipping{background:#ede9fe;color:#6d28d9}.b-delivered{background:#dcfce7;color:#15803d}
+  .b-hold{background:#fef3c7;color:#b45309}.b-cancel{background:#fde8e8;color:#b91c1c}
+  .b-return{background:#ffe4e6;color:#be123c}.b-noanswer{background:#f1f5f9;color:#475569}
+  .b-refunded{background:#e0f2fe;color:#0369a1}
+  .b-manual{background:#f3e8ff;color:#7e22ce}
+  .oc-phone{direction:ltr;text-align:right}
+  .oc-phone a{color:var(--green);font-weight:700;text-decoration:none;font-size:1rem}
+  .oc-meta{font-size:.88rem;color:#3d4c44;margin-top:2px}
+  .oc-meta b{color:var(--green-dark)}
+  .oc-addr{font-size:.83rem;color:var(--muted);margin-top:3px;line-height:1.55}
+  .oc-ip{font-size:.75rem;color:#9aa8a0;margin-top:4px;direction:ltr;text-align:right}
+  .oc-note{font-size:.8rem;background:#fdf6e3;border:1px dashed #e3cd92;border-radius:9px;padding:5px 10px;margin-top:7px}
+  .oc-ctrl{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+  .oc-ctrl select{padding:5px 8px;border-radius:9px;border:1.5px solid var(--line);font-family:inherit;font-size:.8rem;cursor:pointer;flex:1;min-width:110px}
+  .oc-ctrl .mini{width:34px;height:32px;border-radius:9px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font-size:.9rem;transition:.2s}
+  .oc-ctrl .mini:hover{border-color:var(--gold);transform:translateY(-2px)}
+  .cour-in{width:100%;padding:6px 10px;border:1.5px dashed var(--line);border-radius:9px;font-family:inherit;
+    font-size:.8rem;margin-top:8px;outline:none;background:#fbfdfb}
+  .cour-in:focus{border-color:var(--green-2);border-style:solid}
+
+  /* ---------- Table ---------- */
+  .tbl-wrap{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;display:none}
+  .tbl-wrap::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;z-index:2;background:linear-gradient(90deg,var(--gold-2),var(--green-2))}
+  .tbl-scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;min-width:960px}
+  th,td{padding:11px 12px;text-align:right;font-size:.88rem;border-bottom:1px solid var(--line);white-space:nowrap}
+  thead th{background:var(--green-soft);color:var(--green-dark);font-size:.82rem}
+  tbody tr:hover{background:#f3faf6}
+  .o-id{color:var(--muted);font-size:.78rem;direction:ltr}
+
+  .empty{padding:56px 20px;text-align:center;color:var(--muted);background:#fff;border:1.5px dashed var(--line);border-radius:var(--radius)}
+  .empty .e-ic{font-size:2.6rem;display:block;margin-bottom:8px;animation:float 3s ease-in-out infinite}
+  @keyframes float{50%{transform:translateY(-8px)}}
+  .foot-note{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 0 30px}
+
+  /* ---------- Modals ---------- */
+  .modal-ov{position:fixed;inset:0;background:rgba(7,61,46,.45);backdrop-filter:blur(5px);z-index:100;
+    display:none;align-items:center;justify-content:center;padding:16px}
+  .modal-ov.show{display:flex}
+  .modal{background:#fff;border-radius:var(--radius);border:1.5px solid var(--line);box-shadow:var(--shadow-lg);
+    width:min(460px,100%);padding:26px 24px;position:relative;animation:pop .35s ease both;max-height:92vh;overflow:auto}
+  .modal::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--gold-2),var(--green-2))}
+  .modal h3{color:var(--green-dark);margin-bottom:14px;font-size:1.15rem}
+  .modal label{display:block;font-weight:600;font-size:.88rem;margin:10px 0 4px;color:var(--green-dark)}
+  .modal input,.modal select,.modal textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);
+    border-radius:11px;font-family:inherit;font-size:.94rem;outline:none}
+  .modal input:focus,.modal select:focus{border-color:var(--green-2)}
+  .modal .mrow{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
+  .widget-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .widget-list label{display:flex;align-items:center;gap:8px;margin:0;font-weight:500;font-size:.9rem;cursor:pointer;
+    background:#fbfdfb;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px}
+  .tg-tip{font-size:.8rem;color:var(--muted);background:var(--green-soft);border-radius:10px;padding:10px;margin-bottom:6px;line-height:1.6}
+
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);z-index:150;
+    background:var(--green-dark);color:#fff;padding:11px 22px;border-radius:999px;font-size:.92rem;
+    box-shadow:var(--shadow-lg);transition:.4s;opacity:0;max-width:92%;text-align:center}
+  .toast.show{transform:translateX(-50%);opacity:1}
+
+  /* ---------- Print (PDF) ---------- */
+  #printArea{display:none}
+  @media print{
+    body *{visibility:hidden}
+    #printArea{display:block;visibility:visible;position:absolute;inset:0;padding:20px}
+    #printArea table{width:100%;border-collapse:collapse}
+    #printArea th,#printArea td{border:1px solid #999;padding:6px 8px;font-size:11px;text-align:right}
+    #printArea h2{margin-bottom:4px}
+  }
+
+  #dash{display:none}
+  @media (max-width:1100px){.stats{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}.topbar-in{gap:8px}.btn{font-size:.85rem;padding:8px 14px}}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="30" height="30" viewBox="0 0 64 64"><path d="M40 16a17 17 0 1 0 8 27A19 19 0 0 1 40 16z" fill="#f0c04a"/><circle cx="44" cy="22" r="3.5" fill="#f0c04a"/></svg>
+    </div>
+    <h1>সুন্নাহ কেয়ার — অ্যাডমিন</h1>
+    <p>প্রো অর্ডার ম্যানেজমেন্ট প্যানেল</p>
+    <div class="pw-wrap">
+      <input type="password" id="pw" placeholder="অ্যাডমিন পাসওয়ার্ড" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="padding-right:44px">
+      <button type="button" id="pwEye" class="eye" title="দেখুন">👁</button>
+    </div>
+    <div class="login-err" id="loginErr">❌ ভুল পাসওয়ার্ড!</div>
+    <div id="connErr" style="display:none;background:#fde8e8;border:1.5px solid #f5c6c0;color:#b91c1c;border-radius:12px;padding:12px 14px;margin-top:12px;font-size:.88rem;line-height:1.7;text-align:right">
+      ⚠️ <b>সার্ভারে সংযোগ নেই!</b><br>
+      আপনি সম্ভবত <b>ফাইল প্রিভিউ</b>তে খুলেছেন — এখানে লগইন কাজ করে না।<br>
+      ✅ লাইভ প্রিভিউ বাটন থেকে খুলুন: <b>“🔐 অ্যাডমিন প্যানেল — এখানে ক্লিক করুন”</b>
+      <button class="btn btn-sm btn-gold" id="demoBtn" style="margin-top:12px;width:100%">🎯 ডেমো মোডে পুরো প্যানেল দেখুন</button>
+    </div>
+    <div id="connOk" style="display:none;color:#15803d;font-size:.85rem;margin-top:10px">🟢 সার্ভার কানেক্টেড — লগইন করুন</div>
+    <p class="hint">পাসওয়ার্ড: <b style="user-select:all">sunnah2026</b> (ইংরেজি ছোট হাতের অক্ষর)</p>
+    <button class="btn btn-gold" style="width:100%;margin-top:16px" id="loginBtn">🔓 লগইন করুন</button>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div id="dash">
+  <div class="topbar">
+    <div class="wrap topbar-in">
+      <span class="lg"><svg width="23" height="23" viewBox="0 0 64 64"><path d="M40 16a17 17 0 1 0 8 27A19 19 0 0 1 40 16z" fill="#f0c04a"/><circle cx="44" cy="22" r="3.5" fill="#f0c04a"/></svg></span>
+      <div class="tb-title"><b>সুন্নাহ কেয়ার</b><small>ইয়ামিন 👋 · 📋 ম্যানেজার · <span class="live-dot"></span> লাইভ</small></div>
+      <span id="demoBanner" style="display:none;background:#fdf3d4;border:1.5px solid #e3cd92;color:#9a7b0e;font-weight:700;font-size:.8rem;border-radius:999px;padding:4px 12px;align-items:center">⚠️ ডেমো মোড — নমুনা ডেটা</span>
+      <span class="tb-chip" id="newChip"><span class="dot"></span> নতুন অর্ডার 🚩 <b id="newChipN"></b></span>
+      <span class="sp"></span>
+      <button class="btn btn-sm btn-ghost" id="pdfBtn">🖨 পিডিএফ</button>
+      <button class="btn btn-sm btn-ghost" id="widgetBtn">🧩 উইজেট</button>
+      <button class="btn btn-sm btn-ghost" id="csvBtn">📄 CSV</button>
+      <button class="btn btn-sm btn-ghost" id="refreshBtn">🔄</button>
+      <button class="btn btn-sm" id="logoutBtn">লগআউট</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="dtabs">
+      <button class="dtab on" data-d="today">আজ</button>
+      <button class="dtab" data-d="yesterday">গতকাল</button>
+      <button class="dtab" data-d="week">৭ দিন</button>
+      <button class="dtab" data-d="all">সব</button>
+      <button class="dtab" data-d="custom">কাস্টম</button>
+      <input type="date" id="dFrom"> <input type="date" id="dTo">
+      <span id="dateCount" style="font-size:.85rem;color:var(--muted)"></span>
+    </div>
+
+    <div class="stats" id="statsRow">
+      <div class="st" data-w="total"><div class="v" id="stTotal">০</div><div class="l">মোট</div></div>
+      <div class="st" data-w="pending"><div class="v" id="stPending">০</div><div class="l">পেন্ডিং</div></div>
+      <div class="st blue" data-w="confirmed"><div class="v" id="stConfirmed">০</div><div class="l">কনফার্মড</div></div>
+      <div class="st" data-w="shipping"><div class="v" id="stShipping">০</div><div class="l">শিপিং</div></div>
+      <div class="st" data-w="delivered"><div class="v" id="stDelivered">০</div><div class="l">ডেলিভারড</div></div>
+      <div class="st gold" data-w="revenue"><div class="v" id="stRevenue">৳০</div><div class="l">বিক্রি</div></div>
+      <div class="st red" data-w="return"><div class="v" id="stReturn">০</div><div class="l">রিটার্ন</div></div>
+      <div class="st red" data-w="cancel"><div class="v" id="stCancel">০</div><div class="l">বাতিল</div></div>
+    </div>
+
+    <div class="summary" id="summaryRow"></div>
+
+    <div class="actions">
+      <button class="btn btn-sm btn-gold" id="manualBtn">🚩 ম্যানুয়াল অর্ডার</button>
+      <button class="btn btn-sm" id="tgBtn">📤 টেলিগ্রামে পাঠান</button>
+      <button class="btn btn-sm btn-ghost" id="courierBtn">🚚 কুরিয়ার স্ট্যাটাস</button>
+      <button class="btn btn-sm btn-red" id="clearBtn">🗑 সব ডিলিট</button>
+    </div>
+
+    <div class="ctrl">
+      <input type="text" id="search" placeholder="🔍 খুঁজুন: নাম, ফোন, ঠিকানা, পণ্য, কুরিয়ার...">
+      <select id="fStatus"><option value="">সব স্ট্যাটাস</option></select>
+      <div class="vtoggle">
+        <button id="viewCards" class="on">🗂 কার্ড</button>
+        <button id="viewTable">📋 টেবিল</button>
+      </div>
+    </div>
+
+    <div class="cards" id="cards"></div>
+    <div class="tbl-wrap" id="tblWrap">
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>আইডি</th><th>তারিখ</th><th>নাম</th><th>ফোন</th><th>ঠিকানা</th><th>পণ্য</th><th>দাম</th><th>কুরিয়ার</th><th>স্ট্যাটাস</th><th>IP</th><th></th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="empty" id="emptyState" style="display:none">
+      <span class="e-ic">📦</span>এই ফিল্টারে কোনো অর্ডার নেই
+    </div>
+    <div class="foot-note">🛡️ সুন্নাহ কেয়ার প্রো অ্যাডমিন • ডেটা: data/orders.json • পাসওয়ার্ড server.py-তে বদলান</div>
+  </div>
+</div>
+
+<!-- ============ MODALS ============ -->
+<div class="modal-ov" id="manualModal">
+  <div class="modal">
+    <h3>🚩 ম্যানুয়াল অর্ডার যোগ করুন</h3>
+    <label>নাম *</label><input id="mName" placeholder="কাস্টমারের নাম">
+    <label>ফোন *</label><input id="mPhone" placeholder="01XXXXXXXXX" inputmode="numeric">
+    <label>ঠিকানা</label><textarea id="mAddr" rows="2"></textarea>
+    <label>পণ্য</label>
+    <select id="mProduct">
+      <option value="নিউরো গার্ড ফুল কোর্স" data-p="1850">নিউরো গার্ড ফুল কোর্স — ৳১,৮৫০</option>
+      <option value="নিউরো গার্ড হাফ কোর্স" data-p="1050">নিউরো গার্ড হাফ কোর্স — ৳১,০৫০</option>
+    </select>
+    <label>নোট</label><input id="mNote" placeholder="যেমন: ফোনে অর্ডার নেওয়া হয়েছে">
+    <div class="mrow">
+      <button class="btn btn-sm btn-ghost" data-close>বাতিল</button>
+      <button class="btn btn-sm btn-gold" id="mSave">✅ যোগ করুন</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="tgModal">
+  <div class="modal">
+    <h3>📤 টেলিগ্রামে রিপোর্ট</h3>
+    <div class="tg-tip">
+      <b>সেটআপ (একবারই):</b><br>
+      ১. টেলিগ্রামে <b>@BotFather</b>-কে /newbot লিখে বট বানান → Token নিন<br>
+      ২. আপনার বটে একটা মেসেজ দিন, তারপর <b>@userinfobot</b> থেকে Chat ID নিন
+    </div>
+    <label>Bot Token</label><input id="tgToken" placeholder="123456:ABC-DEF...">
+    <label>Chat ID</label><input id="tgChat" placeholder="যেমন: 123456789">
+    <div class="mrow" style="justify-content:space-between">
+      <button class="btn btn-sm btn-ghost" id="tgSave">💾 সেভ</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm btn-ghost" data-close>বাতিল</button>
+        <button class="btn btn-sm btn-gold" id="tgSendToday">📤 আজকের রিপোর্ট</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="widgetModal">
+  <div class="modal">
+    <h3>🧩 উইজেট সাজান</h3>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">কোন কোন স্ট্যাট কার্ড দেখতে চান</p>
+    <div class="widget-list" id="widgetList"></div>
+    <div class="mrow">
+      <button class="btn btn-sm btn-gold" data-close style="width:100%">✅ ঠিক আছে</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="courierModal">
+  <div class="modal">
+    <h3>🚚 কুরিয়ার স্ট্যাটাস</h3>
+    <p style="font-size:.88rem;color:var(--muted);line-height:1.7">
+      প্রতিটি অর্ডার কার্ডে <b>“কুরিয়ার আইডি/স্ট্যাটাস”</b> ঘরে লিখুন (যেমন: <b>Steadfast-123456</b>) — এন্টার দিলেই সেভ।<br><br>
+      📦 কুরিয়ার তথ্য আছে এমন অর্ডার:
+    </p>
+    <div id="courierList" style="margin-top:10px"></div>
+    <div class="mrow"><button class="btn btn-sm btn-gold" data-close style="width:100%">✅ ঠিক আছে</button></div>
+  </div>
+</div>
+
+<div id="printArea"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= Config ================= */
+const STATUS_BN = {pending:'পেন্ডিং',confirmed:'কনফার্মড',shipping:'শিপিং',delivered:'ডেলিভারড',
+                   hold:'হোল্ড',cancel:'বাতিল',return:'রিটার্ন',noanswer:'নো আনসার',refunded:'রিফান্ডেড'};
+const STATUS_CLS = {pending:'b-pending',confirmed:'b-confirmed',shipping:'b-shipping',delivered:'b-delivered',
+                    hold:'b-hold',cancel:'b-cancel',return:'b-return',noanswer:'b-noanswer',refunded:'b-refunded'};
+const MONTHS = ['জানু','ফেব','মার্চ','এপ্রি','মে','জুন','জুলা','আগ','সেপ','অক্টো','নভে','ডিসে'];
+const bn = s => String(s).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+const bn2en = s => String(s).replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d));
+const bnMoney = n => '৳' + bn(Number(n||0).toLocaleString('en-US'));
+function bnDate(ts){
+  const [d, t] = String(ts).split(' '); if(!d) return bn(ts);
+  const [y,m,dd] = d.split('-');
+  let [hh,mm] = (t||'00:00').split(':');
+  let h = +hh; const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+  return bn(dd) + ' ' + MONTHS[+m-1] + ', ' + bn(y) + ', ' + bn(String(h).padStart(2,'0')) + ':' + bn(mm) + ' ' + ap;
+}
+const $ = id => document.getElementById(id);
+function store(k,v){ try{ if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v); }catch(e){} }
+function readStore(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+let KEY = readStore('ng_admin_key') || '';
+let DEMO = false;
+const DEMO_SETTINGS = {blocked_ips:['103.12.44.9'], telegram:{token:'',chat:''}};
+let DEMO_ORDERS = [];
+function demoOrders(){
+  const day = off => { const d = new Date(); d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); };
+  const t = (off,h,m) => day(off) + ' ' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+  return [
+    {id:900000001, ts:t(0,10,42), name:'মোহিউদ্দিন', phone:'01814782417', address:'চৌগাছা, যশোর', product:'নিউরো গার্ড হাফ কোর্স', price:1050, status:'pending', ip:'103.195.140.14', courier:'', note:'', manual:false},
+    {id:900000002, ts:t(0,9,15), name:'শফিকুল ইসলাম', phone:'01723560324', address:'সাথিয়া, পাবনা', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'confirmed', ip:'103.31.179.201', courier:'Steadfast-100234', note:'', manual:false},
+    {id:900000003, ts:t(0,8,5), name:'মোঃ মনিরুজ্জামান', phone:'01303932415', address:'বাদামতলী, ঢাকা', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'shipping', ip:'103.113.174.179', courier:'Pathao-889211', note:'', manual:false},
+    {id:900000004, ts:t(1,21,30), name:'MD কামরুল হাসান', phone:'01815906239', address:'শাহীন একাডেমির দক্ষিণে, ঢাকা', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'delivered', ip:'58.145.187.129', courier:'Steadfast-998877', note:'', manual:false},
+    {id:900000005, ts:t(1,16,2), name:'রুবিনা আক্তার', phone:'01933445566', address:'দাউদকান্দি, কুমিল্লা', product:'নিউরো গার্ড হাফ কোর্স', price:1050, status:'noanswer', ip:'37.111.230.9', courier:'', note:'৩ বার কল করা হয়েছে', manual:false},
+    {id:900000006, ts:t(2,13,44), name:'আব্দুল হালিম', phone:'01612233445', address:'সদর, খুলনা', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'delivered', ip:'43.230.107.55', courier:'Pathao-871204', note:'', manual:false},
+    {id:900000007, ts:t(3,11,20), name:'জাহিদা বেগম', phone:'01555667788', address:'কালিয়া, নড়াইল', product:'নিউরো গার্ড হাফ কোর্স', price:1050, status:'return', ip:'115.127.31.7', courier:'Steadfast-990122', note:'ঠিকানা ভুল', manual:false},
+    {id:900000008, ts:t(4,17,8), name:'মোঃ সাইফুল', phone:'01788990011', address:'পাবনা সদর', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'refunded', ip:'119.30.38.90', courier:'Pathao-830119', note:'', manual:false},
+    {id:900000009, ts:t(0,11,55), name:'হাসিনা আক্তার (ফোনে)', phone:'01822334455', address:'যশোর সদর', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'confirmed', ip:'ম্যানুয়াল', courier:'', note:'ফোনে অর্ডার নেওয়া হয়েছে', manual:true},
+    {id:900000010, ts:t(5,10,10), name:'আনোয়ার হোসেন', phone:'01444556677', address:'ঝিকরগাছা, যশোর', product:'নিউরো গার্ড হাফ কোর্স', price:1050, status:'cancel', ip:'103.108.144.7', courier:'', note:'পণ্য লাগবে না', manual:false}
+  ];
+}
+let orders = [], settings = {blocked_ips:[], telegram:{}};
+let seenIds = new Set();
+let state = {dateMode:'today', status:'', view:'cards'};
+
+/* ---------- toast ---------- */
+let toastT;
+function toast(msg){
+  const t = $('toast'); t.innerHTML = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ---------- কানেকশন চেক (পেজ খোলার সাথে সাথে) ---------- */
+(async () => {
+  const p = await fetch('/api/ping').catch(() => null);
+  if(p && p.ok){ $('connOk').style.display = 'block'; }
+  else {
+    $('connErr').style.display = 'block';
+    $('loginBtn').disabled = true; $('loginBtn').style.opacity = .5;
+  }
+})();
+
+/* ---------- login ---------- */
+async function tryLogin(){
+  KEY = bn2en($('pw').value).trim();
+  const r = await fetch('/api/orders', {headers:{'X-Admin-Key':KEY}}).catch(() => null);
+  if(r && r.ok){
+    store('ng_admin_key', KEY);
+    $('loginScreen').style.display = 'none'; $('dash').style.display = 'block';
+    loadOrders();
+  } else if(r && r.status === 401){
+    $('loginErr').style.display = 'block';
+  } else {
+    $('connErr').style.display = 'block';
+  }
+}
+$('loginBtn').addEventListener('click', tryLogin);
+$('pw').addEventListener('keydown', e => { if(e.key === 'Enter') tryLogin(); });
+$('pwEye').addEventListener('click', () => {
+  const p = $('pw'); p.type = p.type === 'password' ? 'text' : 'password';
+});
+$('demoBtn').addEventListener('click', () => {
+  DEMO = true; DEMO_ORDERS = demoOrders();
+  $('loginScreen').style.display = 'none'; $('dash').style.display = 'block';
+  $('demoBanner').style.display = 'inline-flex';
+  loadOrders();
+  toast('🎯 ডেমো মোড চালু — নমুনা ডেটা দেখানো হচ্ছে');
+});
+$('logoutBtn').addEventListener('click', () => { store('ng_admin_key', null); location.reload(); });
+
+/* ---------- api helper ---------- */
+async function api(path, body){
+  if(DEMO){
+    if(path === '/api/orders') return {ok:true, orders: DEMO_ORDERS, settings: DEMO_SETTINGS};
+    if(path === '/api/orders/status'){ const o = DEMO_ORDERS.find(x=>x.id===+body.id); if(o) o.status = body.status; return {ok:true}; }
+    if(path === '/api/orders/update'){ const o = DEMO_ORDERS.find(x=>x.id===+body.id); if(o) Object.assign(o, body); return {ok:true}; }
+    if(path === '/api/orders/delete'){ DEMO_ORDERS = DEMO_ORDERS.filter(x=>x.id!==+body.id); return {ok:true}; }
+    if(path === '/api/orders/add'){
+      const o = {id: 900000000 + Math.floor(Math.random()*899999), ts: new Date().toISOString().slice(0,16),
+                 name:body.name, phone:body.phone, address:body.address||'', product:body.product||'',
+                 price:+body.price||0, status:'pending', ip:'ম্যানুয়াল', courier:'', note:body.note||'', manual:true};
+      DEMO_ORDERS.unshift(o); return {ok:true, id:o.id};
+    }
+    if(path === '/api/orders/clear'){ DEMO_ORDERS = []; return {ok:true}; }
+    if(path === '/api/ipblock'){
+      let bl = [...DEMO_SETTINGS.blocked_ips];
+      if(body.action === 'unblock') bl = bl.filter(x=>x!==body.ip);
+      else if(!bl.includes(body.ip)) bl.push(body.ip);
+      DEMO_SETTINGS.blocked_ips = bl; return {ok:true, blocked:bl};
+    }
+    if(path === '/api/settings'){ Object.assign(DEMO_SETTINGS.telegram, body); return {ok:true}; }
+    if(path === '/api/telegram/send') return {ok:false, msg:'ডেমো মোডে টেলিগ্রাম যায় না'};
+    return {ok:false};
+  }
+  const url = path.startsWith('/') ? path : '/' + path;
+  const r = await fetch(url, {
+    method: body ? 'POST' : 'GET',
+    headers: body ? {'Content-Type':'application/json','X-Admin-Key':KEY} : {'X-Admin-Key':KEY},
+    body: body ? JSON.stringify(body) : undefined
+  }).catch(() => null);
+  if(!r) return null;
+  try { return await r.json(); } catch(e){ return {ok:false}; }
+}
+
+/* ---------- data ---------- */
+async function loadOrders(silent){
+  const d = await api('/api/orders');
+  if(!d || !d.ok){ if(!silent) toast('❌ সার্ভারে সংযোগ ব্যর্থ'); return; }
+  settings = d.settings || settings;
+  const fresh = d.orders.filter(o => !seenIds.has(o.id));
+  if(seenIds.size && fresh.length){
+    $('newChip').style.display = 'inline-flex';
+    $('newChipN').textContent = ' ' + bn(fresh.length) + 'টি';
+    toast('🔔 ' + bn(fresh.length) + ' টি নতুন অর্ডার এসেছে!');
+  }
+  d.orders.forEach(o => seenIds.add(o.id));
+  orders = d.orders;
+  if(settings.telegram){ $('tgToken').value = settings.telegram.token || ''; $('tgChat').value = settings.telegram.chat || ''; }
+  render();
+}
+$('refreshBtn').addEventListener('click', () => { loadOrders(); toast('🔄 রিফ্রেশ হয়েছে'); });
+setInterval(() => loadOrders(true), 15000);
+
+/* ---------- date filter ---------- */
+function dateRange(){
+  const now = new Date();
+  const fmt = d => d.toISOString().slice(0,10);
+  const m = state.dateMode;
+  if(m === 'today')   return [fmt(now), fmt(now)];
+  if(m === 'yesterday'){ const y = new Date(now); y.setDate(y.getDate()-1); return [fmt(y), fmt(y)]; }
+  if(m === 'week'){ const w = new Date(now); w.setDate(w.getDate()-6); return [fmt(w), fmt(now)]; }
+  if(m === 'custom')  return [$('dFrom').value || '2000-01-01', $('dTo').value || '2100-01-01'];
+  return ['2000-01-01','2100-01-01'];
+}
+document.querySelectorAll('.dtab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.dtab').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  state.dateMode = t.dataset.d;
+  const cust = state.dateMode === 'custom';
+  $('dFrom').style.display = $('dTo').style.display = cust ? 'inline-block' : 'none';
+  render();
+}));
+$('dFrom').addEventListener('change', render);
+$('dTo').addEventListener('change', render);
+
+/* ---------- filtering ---------- */
+function filtered(){
+  const [from, to] = dateRange();
+  const q = $('search').value.trim().toLowerCase();
+  return orders.filter(o => {
+    const d = String(o.ts).slice(0,10);
+    if(d < from || d > to) return false;
+    if(state.status && (state.status === '__manual' ? !o.manual : o.status !== state.status)) return false;
+    if(q && ![o.name,o.phone,o.address,o.product,o.courier].join(' ').toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+/* ---------- render ---------- */
+function esc(s){ const d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; }
+function render(){
+  const list = filtered();
+  const today = new Date().toISOString().slice(0,10);
+
+  const cnt = s => list.filter(o => o.status === s).length;
+  $('stTotal').textContent = bn(list.length);
+  $('stPending').textContent = bn(cnt('pending'));
+  $('stConfirmed').textContent = bn(cnt('confirmed'));
+  $('stShipping').textContent = bn(cnt('shipping'));
+  $('stDelivered').textContent = bn(cnt('delivered'));
+  $('stReturn').textContent = bn(cnt('return'));
+  $('stCancel').textContent = bn(cnt('cancel'));
+  $('stRevenue').textContent = bnMoney(list.filter(o => o.status === 'delivered').reduce((a,o) => a + (+o.price||0), 0));
+  $('dateCount').textContent = '· ' + bn(list.length) + 'টি অর্ডার';
+
+  const stuckCnt = orders.filter(o => o.status === 'pending' && String(o.ts).slice(0,10) < today).length;
+  const rows = [['','সব', orders.length],
+    ...Object.keys(STATUS_BN).map(s => [s, STATUS_BN[s], orders.filter(o=>o.status===s).length]),
+                ['__manual','ম্যানুয়াল', orders.filter(o=>o.manual).length],
+                ['__stuck','⏱ আটকে আছে', stuckCnt]];
+  $('summaryRow').innerHTML = rows.map(([v,l,c]) =>
+    '<span class="chip ' + (state.status===v?'on':'') + '" data-st="' + esc(v) + '">' + esc(l) + ' <b>' + bn(c) + '</b></span>').join('');
+  $('summaryRow').querySelectorAll('.chip').forEach(c =>
+    c.addEventListener('click', () => { state.status = state.status === c.dataset.st ? '' : c.dataset.st;
+      $('fStatus').value = state.status.startsWith('__') ? '' : state.status; render(); }));
+
+  const cur = $('fStatus').value;
+  $('fStatus').innerHTML = '<option value="">সব স্ট্যাটাস</option>' +
+    Object.keys(STATUS_BN).map(s => '<option value="' + s + '" ' + (s===cur?'selected':'') + '>' + STATUS_BN[s] + '</option>').join('');
+
+  $('cards').innerHTML = '';
+  $('tbody').innerHTML = '';
+  $('emptyState').style.display = list.length ? 'none' : 'block';
+  $('cards').style.display = state.view === 'cards' ? 'grid' : 'none';
+  $('tblWrap').style.display = state.view === 'table' ? 'block' : 'none';
+
+  list.forEach((o, i) => {
+    if(state.view === 'cards') $('cards').appendChild(cardEl(o, i));
+    else $('tbody').insertAdjacentHTML('beforeend', rowEl(o));
+  });
+  if(state.view === 'table') bindTable();
+}
+
+function cardEl(o, i){
+  const el = document.createElement('div');
+  el.className = 'ocard';
+  el.style.animationDelay = Math.min(i*50, 500) + 'ms';
+  const blocked = (settings.blocked_ips||[]).includes(o.ip);
+  el.innerHTML =
+    '<div class="oc-top">' +
+      '<span class="badge ' + (STATUS_CLS[o.status]||'b-pending') + '">' + (STATUS_BN[o.status]||o.status) + '</span>' +
+      '<b>' + esc(o.name) + '</b>' +
+      (o.manual ? ' <span class="badge b-manual">ম্যানুয়াল</span>' : '') +
+      '<span class="oc-date">' + bnDate(o.ts) + '</span>' +
+    '</div>' +
+    '<div class="oc-phone"><a href="tel:' + esc(o.phone) + '">' + bn(o.phone) + '</a></div>' +
+    '<div class="oc-meta"><b>' + esc(o.product) + '</b> · ' + bnMoney(o.price) + '</div>' +
+    '<div class="oc-addr">📍 ' + (esc(o.address) || '—') + '</div>' +
+    (o.note ? '<div class="oc-note">📝 ' + esc(o.note) + '</div>' : '') +
+    '<div class="oc-ip">🌐 ' + esc(o.ip) + (blocked ? ' · 🚫 ব্লকড' : '') + '</div>' +
+    '<input class="cour-in" data-id="' + o.id + '" value="' + esc(o.courier||'') + '" placeholder="🚚 কুরিয়ার আইডি/স্ট্যাটাস...">' +
+    '<div class="oc-ctrl">' +
+      '<select data-id="' + o.id + '">' +
+        Object.keys(STATUS_BN).map(s => '<option value="' + s + '" ' + (s===o.status?'selected':'') + '>' + STATUS_BN[s] + '</option>').join('') +
+      '</select>' +
+      '<button class="mini" data-act="conv" data-id="' + o.id + '" title="ফুল ↔ হাফ">🔄</button>' +
+      '<button class="mini" data-act="block" data-id="' + o.id + '" data-ip="' + esc(o.ip) + '" title="' + (blocked?'IP আনব্লক':'IP ব্লক') + '">' + (blocked?'✅':'🚫') + '</button>' +
+      '<button class="mini" data-act="del" data-id="' + o.id + '" title="ডিলিট">🗑</button>' +
+    '</div>';
+  el.querySelectorAll('select[data-id]').forEach(s =>
+    s.addEventListener('change', () => setStatus(s.dataset.id, s.value)));
+  el.querySelectorAll('.cour-in').forEach(c =>
+    c.addEventListener('change', () => updateOrder(c.dataset.id, {courier: c.value})));
+  el.querySelectorAll('.mini').forEach(b => b.addEventListener('click', () => cardAction(b)));
+  return el;
+}
+function rowEl(o){
+  return '<tr>' +
+    '<td class="o-id">#' + (o.id % 100000) + '</td>' +
+    '<td>' + bnDate(o.ts) + '</td>' +
+    '<td><b>' + esc(o.name) + '</b> ' + (o.manual?'<span class="badge b-manual">ম্যানুয়াল</span>':'') + '</td>' +
+    '<td class="oc-phone"><a href="tel:' + esc(o.phone) + '">' + bn(o.phone) + '</a></td>' +
+    '<td style="white-space:normal;min-width:150px">' + esc(o.address) + '</td>' +
+    '<td>' + esc(o.product) + '</td>' +
+    '<td><b>' + bnMoney(o.price) + '</b></td>' +
+    '<td>' + (esc(o.courier) || '—') + '</td>' +
+    '<td><span class="badge ' + (STATUS_CLS[o.status]||'b-pending') + '">' + (STATUS_BN[o.status]||o.status) + '</span></td>' +
+    '<td class="o-id">' + esc(o.ip) + '</td>' +
+    '<td><button class="btn btn-sm btn-ghost" data-act="del" data-id="' + o.id + '">🗑</button></td>' +
+  '</tr>';
+}
+function bindTable(){
+  $('tbody').querySelectorAll('[data-act="del"]').forEach(b =>
+    b.addEventListener('click', () => delOrder(b.dataset.id)));
+}
+
+/* ---------- actions ---------- */
+async function setStatus(id, status){
+  const d = await api('/api/orders/status', {id: +id, status});
+  if(d && d.ok){ const o = orders.find(x => x.id === +id); if(o) o.status = status; render(); toast('✅ ' + STATUS_BN[status]); }
+  else toast('❌ আপডেট ব্যর্থ');
+}
+async function updateOrder(id, patch){
+  const d = await api('/api/orders/update', Object.assign({id: +id}, patch));
+  if(d && d.ok){ Object.assign(orders.find(x => x.id === +id) || {}, patch); toast('💾 সেভ হয়েছে'); }
+  else toast('❌ সেভ ব্যর্থ');
+}
+async function delOrder(id){
+  if(!confirm('অর্ডারটি ডিলিট করবেন?')) return;
+  const d = await api('/api/orders/delete', {id: +id});
+  if(d && d.ok){ orders = orders.filter(x => x.id !== +id); render(); toast('🗑 ডিলিট হয়েছে'); }
+}
+async function cardAction(btn){
+  const id = btn.dataset.id;
+  if(btn.dataset.act === 'del') return delOrder(id);
+  if(btn.dataset.act === 'conv'){
+    const o = orders.find(x => x.id === +id); if(!o) return;
+    const toFull = !String(o.product).includes('ফুল');
+    await updateOrder(id, toFull ? {product:'নিউরো গার্ড ফুল কোর্স', price:1850}
+                                 : {product:'নিউরো গার্ড হাফ কোর্স', price:1050});
+    loadOrders(true); return;
+  }
+  if(btn.dataset.act === 'block'){
+    const ip = btn.dataset.ip;
+    const blocked = (settings.blocked_ips||[]).includes(ip);
+    const d = await api('/api/ipblock', {ip, action: blocked ? 'unblock' : 'block'});
+    if(d && d.ok){ settings.blocked_ips = d.blocked; render();
+      toast(blocked ? '✅ IP আনব্লক হয়েছে' : '🚫 IP ব্লক হয়েছে — এই IP থেকে আর অর্ডার আসবে না'); }
+  }
+}
+
+/* ---------- controls ---------- */
+$('search').addEventListener('input', render);
+$('fStatus').addEventListener('change', e => { state.status = e.target.value; render(); });
+$('viewCards').addEventListener('click', () => { state.view='cards'; $('viewCards').classList.add('on'); $('viewTable').classList.remove('on'); render(); });
+$('viewTable').addEventListener('click', () => { state.view='table'; $('viewTable').classList.add('on'); $('viewCards').classList.remove('on'); render(); });
+
+/* ---------- modals ---------- */
+document.querySelectorAll('[data-close]').forEach(b =>
+  b.addEventListener('click', () => b.closest('.modal-ov').classList.remove('show')));
+document.querySelectorAll('.modal-ov').forEach(ov =>
+  ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); }));
+
+/* ম্যানুয়াল অর্ডার */
+$('manualBtn').addEventListener('click', () => $('manualModal').classList.add('show'));
+$('mSave').addEventListener('click', async () => {
+  const name = $('mName').value.trim(), phone = bn2en($('mPhone').value).trim();
+  if(!name || !/^(\+?88)?01[3-9]\d{8}$/.test(phone)){ toast('⚠️ নাম ও সঠিক ফোন নম্বর দিন'); return; }
+  const sel = $('mProduct');
+  const d = await api('/api/orders/add', {
+    name, phone, address: $('mAddr').value.trim(), product: sel.value,
+    price: +sel.selectedOptions[0].dataset.p, note: $('mNote').value.trim()
+  });
+  if(d && d.ok){
+    $('manualModal').classList.remove('show');
+    ['mName','mPhone','mAddr','mNote'].forEach(x => $(x).value = '');
+    await loadOrders(true); toast('🚩 ম্যানুয়াল অর্ডার যোগ হয়েছে');
+  } else toast('❌ যোগ করা ব্যর্থ');
+});
+
+/* টেলিগ্রাম */
+$('tgBtn').addEventListener('click', () => $('tgModal').classList.add('show'));
+$('tgSave').addEventListener('click', async () => {
+  const d = await api('/api/settings', {token: $('tgToken').value.trim(), chat: $('tgChat').value.trim()});
+  toast(d && d.ok ? '💾 টেলিগ্রাম সেটিংস সেভ হয়েছে' : '❌ সেভ ব্যর্থ');
+});
+$('tgSendToday').addEventListener('click', async () => {
+  const d = await api('/api/telegram/send', {scope: 'today'});
+  toast(d && d.ok ? '📤 টেলিগ্রামে পাঠানো হয়েছে ✅' : '❌ ' + ((d && d.msg) || 'ব্যর্থ — সেটিংস চেক করুন'));
+});
+
+/* উইজেট */
+const WIDGETS = {total:'মোট', pending:'পেন্ডিং', confirmed:'কনফার্মড', shipping:'শিপিং',
+                 delivered:'ডেলিভারড', revenue:'বিক্রি', return:'রিটার্ন', cancel:'বাতিল'};
+function getWidgets(){ try { return JSON.parse(readStore('ng_widgets')) || Object.keys(WIDGETS); } catch(e){ return Object.keys(WIDGETS); } }
+function applyWidgets(){
+  let on = [...$('widgetList').querySelectorAll('input:checked')].map(c => c.value);
+  if(!on.length) on = getWidgets();
+  try{ localStorage.setItem('ng_widgets', JSON.stringify(on)); }catch(e){}
+  document.querySelectorAll('.st[data-w]').forEach(s =>
+    s.style.display = on.includes(s.dataset.w) ? 'block' : 'none');
+}
+$('widgetBtn').addEventListener('click', () => {
+  $('widgetList').innerHTML = Object.keys(WIDGETS).map(k =>
+    '<label><input type="checkbox" value="' + k + '" ' + (getWidgets().includes(k)?'checked':'') + '> ' + WIDGETS[k] + '</label>').join('');
+  $('widgetList').querySelectorAll('input').forEach(c => c.addEventListener('change', applyWidgets));
+  $('widgetModal').classList.add('show');
+});
+applyWidgets();
+
+/* কুরিয়ার */
+$('courierBtn').addEventListener('click', () => {
+  const withC = orders.filter(o => o.courier);
+  $('courierList').innerHTML = withC.length
+    ? withC.map(o => '<div style="display:flex;justify-content:space-between;gap:8px;padding:8px 12px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:6px;font-size:.88rem"><span><b>' + esc(o.name) + '</b> · ' + bn(o.phone) + '</span><span style="color:var(--green)"><b>' + esc(o.courier) + '</b></span></div>').join('')
+    : '<p style="color:var(--muted);font-size:.88rem">এখনো কোনো কুরিয়ার তথ্য নেই</p>';
+  $('courierModal').classList.add('show');
+});
+
+/* সব ডিলিট */
+$('clearBtn').addEventListener('click', async () => {
+  if(!confirm('⚠️ সব অর্ডার ডিলিট হবে! নিশ্চিত?')) return;
+  const d = await api('/api/orders/clear', {});
+  if(d && d.ok){ orders = []; seenIds = new Set(); render(); toast('🗑 সব অর্ডার ডিলিট হয়েছে'); }
+});
+
+/* CSV */
+$('csvBtn').addEventListener('click', () => {
+  if(DEMO){ toast('🎯 ডেমো মোড — লাইভ প্রিভিউতে CSV পাবেন'); return; }
+  window.open('/api/orders.csv?key=' + encodeURIComponent(KEY), '_blank');
+});
+
+/* PDF (প্রিন্ট) */
+$('pdfBtn').addEventListener('click', () => {
+  const list = filtered();
+  if(!list.length){ toast('প্রিন্ট করার মতো অর্ডার নেই'); return; }
+  $('printArea').innerHTML =
+    '<h2>সুন্নাহ কেয়ার — অর্ডার রিপোর্ট</h2>' +
+    '<p>তারিখ: ' + bn(new Date().toLocaleDateString('en-GB')) + ' · মোট: ' + bn(list.length) + ' টি · বিক্রি: ' +
+    bnMoney(list.filter(o=>o.status==='delivered').reduce((a,o)=>a+(+o.price||0),0)) + '</p>' +
+    '<table><thead><tr><th>নাম</th><th>ফোন</th><th>ঠিকানা</th><th>পণ্য</th><th>দাম</th><th>স্ট্যাটাস</th><th>কুরিয়ার</th></tr></thead><tbody>' +
+    list.map(o => '<tr><td>' + esc(o.name) + '</td><td>' + esc(o.phone) + '</td><td>' + esc(o.address) + '</td><td>' + esc(o.product) + '</td><td>' + o.price + '</td><td>' + (STATUS_BN[o.status]||o.status) + '</td><td>' + esc(o.courier||'') + '</td></tr>').join('') +
+    '</tbody></table>';
+  window.print();
+});
+
+/* ---------- অটো লগইন ---------- */
+(async () => {
+  if(KEY){
+    const r = await fetch('/api/orders', {headers:{'X-Admin-Key':KEY}}).catch(() => null);
+    if(r && r.ok){ $('loginScreen').style.display = 'none'; $('dash').style.display = 'block'; loadOrders(); }
+  }
+})();
+</script>
+</body>
+</html>
