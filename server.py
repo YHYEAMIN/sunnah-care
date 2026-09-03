@@ -8,7 +8,7 @@
 
 পাসওয়ার্ড: ADMIN_PASSWORD এনভায়রনমেন্ট বা ডিফল্ট 'sunnah2026'
 """
-import json, os, time, random, csv, io, urllib.request
+import json, os, time, random, csv, io, urllib.request, secrets
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse
 
@@ -20,6 +20,8 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.environ.get('DATA_DIR') or ('/var/data' if os.path.isdir('/var/data') else os.path.join(ROOT, 'data'))
 DATAF = os.path.join(DATA_DIR, 'orders.json')
 SETTF = os.path.join(DATA_DIR, 'settings.json')
+USERSF = os.path.join(DATA_DIR, 'users.json')
+SESSIONS = {}
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'sunnah2026')
 STATUSES = {'incomplete','pending','confirmed','shipping','delivered','hold','cancel','return','noanswer','refunded'}
 
@@ -43,6 +45,16 @@ def save_settings(s):
     os.makedirs(os.path.dirname(SETTF), exist_ok=True)
     with open(SETTF, 'w', encoding='utf-8') as f:
         json.dump(s, f, ensure_ascii=False, indent=1)
+
+def load_users():
+    try:
+        with open(USERSF, encoding='utf-8') as f: return json.load(f)
+    except Exception: return {'users': []}
+
+def save_users(u):
+    os.makedirs(os.path.dirname(USERSF), exist_ok=True)
+    with open(USERSF, 'w', encoding='utf-8') as f:
+        json.dump(u, f, ensure_ascii=False, indent=1)
 
 def telegram_send(token, chat, text):
     try:
@@ -81,11 +93,22 @@ class Handler(BaseHTTPRequestHandler):
         try: return json.loads(self.rfile.read(n).decode())
         except Exception: return {}
 
-    def _admin(self):
+    def _key(self):
         q = urlparse(self.path).query
         key = self.headers.get('X-Admin-Key', '')
         if not key and q.startswith('key='): key = q[4:]
-        return key.strip().lower() == ADMIN_PASSWORD.strip().lower()
+        return key.strip()
+
+    def _boss(self):
+        return self._key().lower() == ADMIN_PASSWORD.strip().lower()
+
+    def _admin(self):
+        return self._boss() or self._key() in SESSIONS
+
+    def _me(self):
+        if self._boss(): return {'name': 'Yamin', 'role': 'admin'}
+        u = SESSIONS.get(self._key())
+        return {'name': u.get('name', 'Staff'), 'role': 'staff'} if u else None
 
     def _ip(self):
         f = self.headers.get('X-Forwarded-For', '')
@@ -106,7 +129,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, {'ok': True, 'server': 'sunnah-care'})
         elif p == '/api/orders':
             if not self._admin(): self._send(401, {'ok': False, 'msg': 'ভুল পাসওয়ার্ড'}); return
-            self._send(200, {'ok': True, 'orders': load_orders(), 'settings': load_settings()})
+            me = self._me()
+            self._send(200, {'ok': True, 'orders': load_orders(), 'settings': load_settings(), 'me': me})
         elif p == '/api/orders.csv':
             if not self._admin(): self._send(401, '\ufeffভুল পাসওয়ার্ড', 'text/csv; charset=utf-8'); return
             buf = io.StringIO(); w = csv.writer(buf)
@@ -161,6 +185,42 @@ class Handler(BaseHTTPRequestHandler):
                 orders.insert(0, o)
             self._send(200, {'ok': True, 'id': o['id']})
 
+        elif p == '/api/login':                               # স্টাফ লগইন (ইমেইল+পাসওয়ার্ড)
+            email = str(d.get('email', '')).strip().lower()
+            password = str(d.get('password', '')).strip()
+            u = next((x for x in load_users().get('users', [])
+                      if str(x.get('email', '')).strip().lower() == email and str(x.get('pass', '')) == password), None)
+            if not u: self._send(401, {'ok': False, 'msg': 'Wrong email or password'}); return
+            tok = 'tok_' + secrets.token_hex(10)
+            SESSIONS[tok] = {'email': email, 'name': u.get('name', 'Staff')}
+            self._send(200, {'ok': True, 'key': tok, 'name': u.get('name', 'Staff'), 'role': 'staff'}); return
+
+        elif p == '/api/users/list':                          # বস: স্টাফ তালিকা
+            if not self._boss(): self._send(401, {'ok': False}); return
+            users = [{'name': u.get('name', ''), 'email': u.get('email', '')} for u in load_users().get('users', [])]
+            self._send(200, {'ok': True, 'users': users}); return
+
+        elif p == '/api/users/add':                           # বস: নতুন স্টাফ অ্যাকাউন্ট
+            if not self._boss(): self._send(401, {'ok': False}); return
+            name = str(d.get('name', '')).strip()[:40]
+            email = str(d.get('email', '')).strip().lower()[:60]
+            password = str(d.get('password', '')).strip()[:40]
+            if not name or '@' not in email or len(password) < 4:
+                self._send(400, {'ok': False, 'msg': 'Enter name, valid email & 4+ char password'}); return
+            db = load_users(); users = db.setdefault('users', [])
+            if any(str(u.get('email', '')).lower() == email for u in users):
+                self._send(400, {'ok': False, 'msg': 'This email already exists'}); return
+            users.append({'name': name, 'email': email, 'pass': password}); save_users(db)
+            self._send(200, {'ok': True, 'msg': 'Staff added'}); return
+
+        elif p == '/api/users/delete':                        # বস: স্টাফ অ্যাকাউন্ট বাদ
+            if not self._boss(): self._send(401, {'ok': False}); return
+            email = str(d.get('email', '')).strip().lower()
+            db = load_users(); db['users'] = [u for u in db.get('users', []) if str(u.get('email', '')).lower() != email]
+            save_users(db)
+            for tok in [t for t, u in list(SESSIONS.items()) if u.get('email') == email]: del SESSIONS[tok]
+            self._send(200, {'ok': True, 'msg': 'Staff removed'}); return
+
         elif p == '/api/orders/add':                            # অ্যাডমিন: ম্যানুয়াল অর্ডার
             if not self._admin(): self._send(401, {'ok': False}); return
             if not d.get('name') or not d.get('phone'):
@@ -185,6 +245,9 @@ class Handler(BaseHTTPRequestHandler):
                 if o['id'] == d.get('id'):
                     for k in ('product', 'courier', 'note'):
                         if k in d: o[k] = str(d.get(k) or '')[:120]
+                    if 'name' in d: o['name'] = str(d.get('name') or '')[:80]
+                    if 'phone' in d: o['phone'] = str(d.get('phone') or '')[:20]
+                    if 'address' in d: o['address'] = str(d.get('address') or '')[:200]
                     if 'price' in d:
                         try: o['price'] = int(d.get('price') or 0)
                         except Exception: pass
@@ -195,8 +258,8 @@ class Handler(BaseHTTPRequestHandler):
             orders = [o for o in load_orders() if o['id'] != d.get('id')]
             self._send(200, {'ok': True})
 
-        elif p == '/api/orders/clear':                          # সব ডিলিট
-            if not self._admin(): self._send(401, {'ok': False}); return
+        elif p == '/api/orders/clear':                          # সব ডিলিট (শুধু বস)
+            if not self._boss(): self._send(401, {'ok': False}); return
             orders = []
             self._send(200, {'ok': True, 'msg': 'সব অর্ডার ডিলিট হয়েছে'})
 

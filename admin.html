@@ -1,192 +1,186 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>সুন্নাহ কেয়ার — প্রো অ্যাডমিন প্যানেল</title>
+<title>Sunnah Care — Admin</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230a5c44'/%3E%3Cpath d='M40 16a17 17 0 1 0 8 27A19 19 0 0 1 40 16z' fill='%23f0c04a'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --green:#0a5c44; --green-2:#17a47b; --green-dark:#073d2e; --green-soft:#e8f4ee;
-    --gold:#d9a521; --gold-2:#f0c04a; --cream:#f6faf7; --ink:#1c2b23; --muted:#5b6b62;
-    --line:#dfe9e2; --red:#c0392b; --radius:16px;
-    --shadow:0 8px 24px rgba(7,61,46,.09); --shadow-lg:0 18px 44px rgba(7,61,46,.14);
+    --green-2:#4ade80; --green:#2fbd8b; --green-dark:#134a36; --green-soft:#12291f;
+    --gold:#f0c04a; --gold-2:#f5d67a; --cream:#0b1512; --line:#274033;
+    --card:#16241d; --card2:#101d17; --ink:#eef7f1; --ink2:#cfe3d7; --muted:#8fa89a;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Hind Siliguri',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh}
-  .wrap{width:min(1280px,95%);margin:0 auto}
+  .wrap{width:min(680px,94%);margin:0 auto}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;border:none;
-    font-family:inherit;font-weight:600;font-size:.92rem;border-radius:999px;padding:9px 18px;
-    background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;box-shadow:0 6px 16px rgba(14,122,88,.28);transition:.2s}
-  .btn:hover{transform:translateY(-2px)}
-  .btn-gold{background:linear-gradient(135deg,var(--gold-2),#c89012);box-shadow:0 6px 16px rgba(217,165,33,.32)}
-  .btn-red{background:linear-gradient(135deg,#e0604e,#c0392b)}
-  .btn-sm{padding:6px 13px;font-size:.84rem}
-  .btn-ghost{background:#fff;color:var(--green-dark);border:1.5px solid var(--line);box-shadow:none}
+    font-family:inherit;font-weight:600;font-size:.85rem;border-radius:10px;padding:8px 14px;
+    background:var(--green-soft);color:var(--ink);border:1px solid var(--line);transition:.2s}
+  .btn:hover{border-color:var(--gold)}
+  .btn-gold{background:linear-gradient(135deg,var(--gold-2),var(--gold) 40%,var(--green));color:#071009;border:none}
+  .btn-green{background:var(--green);color:#06231a;border:none}
+  .btn-red{background:#3b1512;color:#fca5a5;border:1px solid #7f1d1d}
+  .btn-sm{padding:6px 12px;font-size:.8rem}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
 
-  /* ---------- Login ---------- */
-  .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:
-    radial-gradient(700px 320px at 85% 0%,rgba(240,192,74,.25),transparent 60%),linear-gradient(150deg,#f4fbf7,#e3f2ea)}
-  .login-card{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-lg);
-    padding:42px 36px;width:min(420px,92%);text-align:center;position:relative;overflow:hidden;animation:pop .5s ease both}
-  @keyframes pop{from{opacity:0;transform:translateY(26px) scale(.95)}to{opacity:1;transform:none}}
-  .login-card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;
-    background:linear-gradient(90deg,var(--gold-2),var(--green-2),var(--gold-2))}
-  .login-logo{width:62px;height:62px;border-radius:50%;margin:0 auto 14px;
-    background:radial-gradient(circle at 30% 30%,var(--green-2),var(--green-dark));display:grid;place-items:center;
-    box-shadow:0 8px 20px rgba(10,92,68,.3)}
-  .login-card h1{font-size:1.4rem;color:var(--green-dark)}
-  .login-card p{color:var(--muted);font-size:.92rem;margin:4px 0 20px}
-  .login-card input{width:100%;padding:13px 16px;border:1.5px solid var(--line);border-radius:12px;font-size:1rem;
-    font-family:inherit;outline:none;text-align:center;transition:.2s}
-  .login-card input:focus{border-color:var(--green-2);box-shadow:0 0 0 4px rgba(23,164,123,.14)}
-  .login-err{color:var(--red);font-size:.9rem;margin-top:10px;display:none}
+  /* ---------- LOGIN ---------- */
+  .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(600px 300px at 85% 0%,rgba(240,192,74,.07),transparent 60%),linear-gradient(150deg,var(--card2),var(--cream));padding:16px}
+  .login-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:38px 30px;
+    width:min(400px,100%);text-align:center;position:relative;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.45)}
+  .login-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--green),var(--gold))}
+  .login-logo{width:60px;height:60px;border-radius:50%;margin:0 auto 12px;background:radial-gradient(circle at 30% 30%,var(--green),var(--green-dark));display:grid;place-items:center}
+  .login-card h1{font-size:1.3rem;color:var(--ink)}
+  .login-card p{color:var(--muted);font-size:.9rem;margin:4px 0 18px}
+  .login-card label{display:block;text-align:left;font-size:.8rem;font-weight:600;color:var(--ink2);margin:10px 2px 4px}
+  .login-card input{width:100%;padding:12px 16px;border:1px solid var(--line);border-radius:11px;font-size:1rem;
+    font-family:inherit;outline:none;background:var(--card2);color:var(--ink)}
+  .login-card input:focus{border-color:var(--green)}
   .pw-wrap{position:relative}
-  .pw-wrap .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;
-    font-size:1.15rem;cursor:pointer}
-  .hint{margin-top:12px;font-size:.82rem;color:var(--muted)}
+  .pw-wrap input{padding-right:44px}
+  .pw-wrap .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.1rem;cursor:pointer}
+  .login-err{color:#fca5a5;font-size:.88rem;margin-top:10px;display:none}
+  .hint{margin-top:12px;font-size:.8rem;color:var(--muted)}
+  #connOk{display:none;color:var(--green-2);font-size:.84rem;margin-top:10px}
+  #connErr{display:none;background:#3b1512;border:1px solid #7f1d1d;color:#fca5a5;border-radius:11px;padding:11px 13px;margin-top:12px;font-size:.86rem;line-height:1.65;text-align:left}
+  .staff-hint{font-size:.74rem;color:var(--muted);margin-top:4px;text-align:left}
 
-  /* ---------- Topbar ---------- */
-  .topbar{background:#fff;border-bottom:1.5px solid var(--line);position:sticky;top:0;z-index:40}
-  .topbar-in{display:flex;align-items:center;gap:10px;padding:10px 0;flex-wrap:wrap}
-  .topbar .lg{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--green-2),var(--green-dark));
-    display:grid;place-items:center;flex:0 0 auto}
-  .tb-title b{font-size:1.1rem;color:var(--green-dark);display:block;line-height:1.2}
-  .tb-title small{color:var(--muted);font-size:.78rem}
-  .tb-chip{background:#fde8e8;color:#b91c1c;font-weight:700;font-size:.8rem;border-radius:999px;
-    padding:4px 12px;display:none;align-items:center;gap:6px;animation:chipPulse 1.5s infinite}
-  @keyframes chipPulse{50%{transform:scale(1.06)}}
-  .tb-chip .dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
-  .sp{margin-right:auto}
-  .live-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;animation:blink 1.6s infinite}
+  /* ---------- HEADER ---------- */
+  .topbar{background:var(--card2);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+  .brand-row{display:flex;align-items:center;gap:10px;padding:12px 0 4px}
+  .brand-row .lg{width:40px;height:40px;border-radius:11px;background:radial-gradient(circle at 30% 30%,var(--green),var(--green-dark));display:grid;place-items:center;flex:0 0 auto}
+  .brand-row b{font-size:1.05rem;color:var(--ink);display:block;line-height:1.25}
+  .who{font-size:.86rem;color:var(--muted)}
+  .who i{font-style:normal;color:var(--ink2);font-weight:600}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--green-2);display:inline-block;margin:0 4px;animation:blink 1.6s infinite}
   @keyframes blink{50%{opacity:.25}}
+  .hdr-btns{display:flex;gap:7px;flex-wrap:wrap;padding:6px 0 12px}
+  .newchip{background:#3b1512;border:1px solid #7f1d1d;color:#fca5a5;font-weight:700;font-size:.78rem;
+    border-radius:10px;padding:5px 11px;display:none;align-items:center;gap:6px;animation:chipP 1.5s infinite}
+  @keyframes chipP{50%{transform:scale(1.05)}}
+  .rep-mini{font-size:.7rem;color:var(--muted);display:block}
 
-  /* ---------- Date tabs ---------- */
-  .dtabs{display:flex;gap:8px;margin:18px 0 14px;flex-wrap:wrap;align-items:center}
-  .dtab{padding:7px 18px;border-radius:999px;border:1.5px solid var(--line);background:#fff;cursor:pointer;
-    font-family:inherit;font-size:.9rem;font-weight:600;color:var(--muted);transition:.2s}
+  /* ---------- TABS ---------- */
+  .dtabs{display:flex;gap:7px;margin:14px 0 12px;flex-wrap:wrap;align-items:center}
+  .dtab{padding:7px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);cursor:pointer;
+    font-family:inherit;font-size:.87rem;font-weight:600;color:var(--muted);transition:.2s}
   .dtab:hover{border-color:var(--gold)}
-  .dtab.on{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;border-color:transparent;box-shadow:0 6px 14px rgba(14,122,88,.28)}
-  .dtabs input[type=date]{padding:6px 10px;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;display:none}
+  .dtab.on{background:var(--green);color:#06231a;border-color:transparent}
+  .dtab .cnt{background:rgba(0,0,0,.18);border-radius:999px;padding:0 8px;margin-right:2px;font-size:.78rem}
+  .dtabs input[type=date]{padding:6px 9px;border:1px solid var(--line);border-radius:9px;font-family:inherit;display:none;background:var(--card);color:var(--ink)}
 
-  /* ---------- Stat widgets ---------- */
-  .stats{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin-bottom:14px}
-  .st{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;
-    position:relative;overflow:hidden;transition:.25s;box-shadow:var(--shadow)}
-  .st:hover{transform:translateY(-4px);border-color:var(--gold)}
-  .st::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold-2),var(--green-2))}
-  .st .v{font-size:1.3rem;font-weight:700;color:var(--green)}
-  .chip b{color:var(--green)}
-  .st .l{font-size:.76rem;color:var(--muted)}
-  .st.gold .v{color:#b8860b}.st.red .v{color:var(--red)}.st.blue .v{color:#075985}
+  /* ---------- DAY WIDGETS ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+  .st{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 6px;text-align:center;position:relative;overflow:hidden}
+  .st::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--green))}
+  .st .v{font-size:1.35rem;font-weight:700;color:var(--green-2)}
+  .st .l{font-size:.74rem;color:var(--muted)}
+  .st.gold .v{color:var(--gold)}
 
-  /* ---------- Summary chips ---------- */
-  .summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-  .chip{background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;font-size:.83rem;
+  /* ---------- SUMMARY ---------- */
+  .sum-head{font-size:.95rem;font-weight:700;color:var(--ink2);margin:4px 0 8px}
+  .summary{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.8rem;
     font-weight:600;color:var(--muted);cursor:pointer;transition:.2s}
-  .chip:hover{border-color:var(--gold)}
+  .chip b{color:var(--green-2);margin-right:2px}
   .chip.on{background:var(--green-dark);color:#fff;border-color:transparent}
-  .chip b{color:var(--green)} .chip.on b{color:var(--gold-2)}
+  .chip.on b{color:var(--gold-2)}
 
-  /* ---------- Action bar ---------- */
-  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  /* ---------- ACTIONS ---------- */
+  .actions{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+  .ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .ctrl input,.ctrl select{padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:.9rem;outline:none;background:var(--card);color:var(--ink)}
+  .ctrl input{flex:1;min-width:150px}
+  .ctrl input:focus,.ctrl select:focus{border-color:var(--green)}
 
-  /* ---------- Search row ---------- */
-  .ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-  .ctrl input,.ctrl select{padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;
-    font-size:.95rem;outline:none;background:#fff}
-  .ctrl input{flex:1;min-width:180px}
-  .ctrl input:focus,.ctrl select:focus{border-color:var(--green-2)}
-  .vtoggle{display:flex;border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
-  .vtoggle button{border:none;background:#fff;padding:9px 16px;cursor:pointer;font-family:inherit;font-size:.88rem;font-weight:600;color:var(--muted)}
-  .vtoggle button.on{background:var(--green-dark);color:#fff}
+  /* ---------- ORDER CARD ---------- */
+  .cards{display:grid;gap:10px}
+  .ocard{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:27px 15px 11px;position:relative;overflow:hidden;animation:cardIn .35s ease both}
+  @keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .ocard::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--green))}
+  .o-price{position:absolute;top:9px;right:12px;z-index:2;font-size:1.02rem;font-weight:800;padding:4px 13px;border-radius:999px;direction:ltr;
+    background:linear-gradient(135deg,var(--gold-2),var(--gold) 40%,var(--green));color:#071009;box-shadow:0 3px 14px rgba(240,192,74,.4),0 0 0 1px rgba(255,255,255,.12) inset}
+  .o-name{font-size:1.05rem;font-weight:700;color:var(--ink)}
+  .o-phone{direction:ltr;text-align:right;font-weight:800;color:var(--green-2);font-size:1.35rem;margin-top:2px;letter-spacing:.5px}
+  .o-phone a{color:var(--green-2);text-decoration:none}
+  .o-addr{color:var(--muted);font-size:.88rem;margin-top:2px}
+  .o-prod{font-size:.88rem;color:var(--ink2);margin-top:5px}
+  .o-prod .sep{color:var(--gold);margin:0 5px}
+  .o-ip{font-size:.76rem;color:var(--muted);margin-top:3px;direction:ltr;text-align:right}
+  .o-note{font-size:.8rem;background:var(--green-soft);border:1px dashed var(--line);border-radius:8px;padding:4px 9px;margin-top:6px;color:var(--ink2)}
+  .o-quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .qbtn{flex:1;min-width:70px;padding:7px 4px;border-radius:9px;border:1px solid var(--line);background:var(--card2);color:var(--ink);
+    font-family:inherit;font-size:.76rem;font-weight:700;cursor:pointer;transition:.15s}
+  .qbtn:hover{border-color:var(--gold)}
+  .qbtn.on{background:var(--green-dark);border-color:var(--green);color:#eafff5}
+  .qbtn.q-cancel.on{background:#3b1512;border-color:#b91c1c;color:#fca5a5}
+  .qbtn.q-delivered.on{background:#10331f;border-color:#2fbd8b;color:#86efac}
+  .qbtn.q-hold.on{background:#3a2c0d;border-color:var(--gold);color:var(--gold-2)}
+  .qbtn.na{flex:0 0 auto;margin-left:auto;background:var(--green-soft);border-color:var(--gold);color:var(--gold-2)}
+  .qbtn.na.on{background:var(--green-dark);color:var(--gold-2)}
+  .o-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;padding-top:9px;border-top:1px dashed var(--line);align-items:center}
+  .o-btns .btn{font-size:.78rem;padding:5px 11px}
+  .o-btns select{margin-left:auto;background:var(--card2);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:5px 8px;font-family:inherit;font-size:.78rem}
+  .badge{display:inline-block;padding:1px 9px;border-radius:999px;font-size:.7rem;font-weight:700;position:absolute;top:9px;left:13px;background:rgba(0,0,0,.25)}
+  .b-incomplete{color:#cbd5e1;border:1px dashed #94a3b8}
+  .b-pending{color:#fde68a}.b-confirmed{color:#93c5fd}.b-shipping{color:#c4b5fd}
+  .b-delivered{color:#86efac}.b-hold{color:#fdba74}.b-cancel{color:#fca5a5}
+  .b-return{color:#fda4af}.b-noanswer{color:#cbd5e1}.b-refunded{color:#7dd3fc}
+  .b-manual{color:var(--gold-2)}
 
-  /* ---------- Order CARDS ---------- */
-  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
-  .ocard{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
-    padding:16px 16px 12px;position:relative;overflow:hidden;transition:.25s;animation:cardIn .4s ease both}
-  @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .ocard:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:var(--shadow-lg)}
-  .ocard::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold-2),var(--green-2))}
-  .oc-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;flex-wrap:wrap}
-  .oc-top b{font-size:1.02rem;color:var(--green-dark)}
-  .oc-date{margin-right:auto;font-size:.76rem;color:var(--muted)}
-  .badge{display:inline-block;padding:2px 11px;border-radius:999px;font-size:.74rem;font-weight:700;white-space:nowrap}
-  .b-pending{background:#fdf3d4;color:#9a7b0e}.b-confirmed{background:#e0f2fe;color:#075985}
-  .b-shipping{background:#ede9fe;color:#6d28d9}.b-delivered{background:#dcfce7;color:#15803d}
-  .b-hold{background:#fef3c7;color:#b45309}.b-cancel{background:#fde8e8;color:#b91c1c}
-  .b-return{background:#ffe4e6;color:#be123c}.b-noanswer{background:#f1f5f9;color:#475569}
-  .b-refunded{background:#e0f2fe;color:#0369a1}
-  .b-incomplete{background:#eef1f5;color:#475569;border:1px dashed #cbd5e1}
-  .b-manual{background:#f3e8ff;color:#7e22ce}
-  .oc-phone{direction:ltr;text-align:right}
-  .oc-phone a{color:var(--green);font-weight:700;text-decoration:none;font-size:1rem}
-  .o-id{color:var(--muted)}
-  .oc-meta{font-size:.88rem;color:#3d4c44;margin-top:2px}
-  .oc-meta b{color:var(--green-dark)}
-  .oc-addr{font-size:.83rem;color:var(--muted);margin-top:3px;line-height:1.55}
-  .oc-ip{font-size:.75rem;color:#9aa8a0;margin-top:4px;direction:ltr;text-align:right}
-  .oc-note{font-size:.8rem;background:#fdf6e3;border:1px dashed #e3cd92;border-radius:9px;padding:5px 10px;margin-top:7px}
-  .oc-ctrl{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
-  .oc-ctrl select{padding:5px 8px;border-radius:9px;border:1.5px solid var(--line);font-family:inherit;font-size:.8rem;cursor:pointer;flex:1;min-width:110px}
-  .oc-ctrl .mini{width:34px;height:32px;border-radius:9px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font-size:.9rem;transition:.2s}
-  .oc-ctrl .mini:hover{border-color:var(--gold);transform:translateY(-2px)}
-  .cour-in{width:100%;padding:6px 10px;border:1.5px dashed var(--line);border-radius:9px;font-family:inherit;
-    font-size:.8rem;margin-top:8px;outline:none;background:#fbfdfb}
-  .cour-in:focus{border-color:var(--green-2);border-style:solid}
+  .empty{padding:48px 18px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:13px}
+  .empty .e-ic{font-size:2.4rem;display:block;margin-bottom:6px}
+  .foot-note{text-align:center;color:var(--muted);font-size:.76rem;padding:18px 0 30px}
 
-  /* ---------- Table ---------- */
-  .tbl-wrap{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;display:none}
-  .tbl-wrap::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;z-index:2;background:linear-gradient(90deg,var(--gold-2),var(--green-2))}
-  .tbl-scroll{overflow-x:auto}
-  table{width:100%;border-collapse:collapse;min-width:960px}
-  th,td{padding:11px 12px;text-align:right;font-size:.88rem;border-bottom:1px solid var(--line);white-space:nowrap}
-  thead th{background:var(--green-soft);color:var(--green-dark);font-size:.82rem;border-bottom:2px solid var(--gold)}
-  tbody tr:hover{background:var(--green-soft)}
-  .o-id{color:var(--muted);font-size:.78rem;direction:ltr}
-
-  .empty{padding:56px 20px;text-align:center;color:var(--muted);background:#fff;border:1.5px dashed var(--line);border-radius:var(--radius)}
-  .empty .e-ic{font-size:2.6rem;display:block;margin-bottom:8px;animation:float 3s ease-in-out infinite}
-  @keyframes float{50%{transform:translateY(-8px)}}
-  .foot-note{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 0 30px}
-
-  /* ---------- Modals ---------- */
-  .modal-ov{position:fixed;inset:0;background:rgba(7,61,46,.45);backdrop-filter:blur(5px);z-index:100;
-    display:none;align-items:center;justify-content:center;padding:16px}
+  /* ---------- MODALS ---------- */
+  .modal-ov{position:fixed;inset:0;background:rgba(4,10,8,.7);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:14px}
   .modal-ov.show{display:flex}
-  .modal{background:#fff;border-radius:var(--radius);border:1.5px solid var(--line);box-shadow:var(--shadow-lg);
-    width:min(460px,100%);padding:26px 24px;position:relative;animation:pop .35s ease both;max-height:92vh;overflow:auto}
-  .modal::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--gold-2),var(--green-2))}
-  .modal h3{color:var(--green-dark);margin-bottom:14px;font-size:1.15rem}
-  .modal label{display:block;font-weight:600;font-size:.88rem;margin:10px 0 4px;color:var(--green-dark)}
-  .modal input,.modal select,.modal textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);
-    border-radius:11px;font-family:inherit;font-size:.94rem;outline:none}
-  .modal input:focus,.modal select:focus{border-color:var(--green-2)}
-  .modal .mrow{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
-  .widget-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .widget-list label{display:flex;align-items:center;gap:8px;margin:0;font-weight:500;font-size:.9rem;cursor:pointer;
-    background:#fbfdfb;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px}
-  .tg-tip{font-size:.8rem;color:var(--muted);background:var(--green-soft);border-radius:10px;padding:10px;margin-bottom:6px;line-height:1.6}
+  .modal{background:var(--card);border:1px solid var(--line);border-radius:15px;width:min(430px,100%);padding:22px 20px;position:relative;max-height:90vh;overflow:auto;animation:cardIn .3s ease both}
+  .modal::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--green))}
+  .modal h3{color:var(--ink);margin-bottom:12px;font-size:1.05rem}
+  .modal label{display:block;font-weight:600;font-size:.85rem;margin:9px 0 3px;color:var(--ink2)}
+  .modal input,.modal select,.modal textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:.9rem;outline:none;background:var(--card2);color:var(--ink)}
+  .modal .mrow{display:flex;gap:8px;margin-top:14px;justify-content:flex-end}
+  .modal textarea{resize:vertical}
+  .widget-list{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .widget-list label{display:flex;align-items:center;gap:7px;margin:0;font-weight:500;font-size:.86rem;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:7px 9px}
+  .tg-tip{font-size:.78rem;color:var(--muted);background:var(--green-soft);border-radius:9px;padding:9px;margin-bottom:4px;line-height:1.6}
+  .cour-row{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 11px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;font-size:.85rem}
+  .cour-row input{flex:1;margin-left:8px;padding:5px 9px;border:1px dashed var(--line);border-radius:8px;background:var(--card2);color:var(--ink);font-family:inherit;font-size:.8rem;outline:none}
+  .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .theme-opt{display:flex;align-items:center;gap:7px;padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:var(--card);cursor:pointer;font-family:inherit;font-size:.83rem;font-weight:600;color:var(--ink);transition:.2s;text-align:left}
+  .theme-opt span.d{width:13px;height:13px;border-radius:50%;display:inline-block;border:1px solid rgba(255,255,255,.15)}
+  .na-chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}
+  .na-chip{padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-family:inherit;font-size:.8rem;font-weight:600;color:var(--muted);cursor:pointer;transition:.15s}
+  .na-chip.on{background:var(--green-dark);color:var(--gold-2);border-color:var(--gold)}
+  .na-cust{background:var(--card2);border:1px dashed var(--line);border-radius:11px;padding:10px 12px;margin:2px 0 8px}
+  .na-cust .n{font-weight:700;color:var(--ink);font-size:.95rem}
+  .na-cust .p{direction:ltr;text-align:right;font-size:1.3rem;font-weight:800;color:var(--green-2);letter-spacing:.5px}
+  .hist-box{background:var(--card2);border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-top:8px;font-size:.84rem}
+  .hist-box .hh{font-weight:700;color:var(--gold-2);margin-bottom:6px}
+  .hist-row{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px dashed var(--line);color:var(--ink2)}
+  .hist-row:last-child{border-bottom:none}
+  .hist-row .hs{font-weight:700}
+  .hist-row .hs.inc{color:#cbd5e1}.hist-row .hs.pend{color:#fde68a}.hist-row .hs.conf{color:#93c5fd}
+  .hist-row .hs.ship{color:#c4b5fd}.hist-row .hs.del{color:#86efac}.hist-row .hs.bad{color:#fca5a5}
+  .user-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;font-size:.86rem}
+  .user-row .un{font-weight:700;color:var(--ink)}
+  .user-row .ue{color:var(--muted);font-size:.78rem;direction:ltr}
 
-  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);z-index:150;
-    background:var(--green-dark);color:#fff;padding:11px 22px;border-radius:999px;font-size:.92rem;
-    box-shadow:var(--shadow-lg);transition:.4s;opacity:0;max-width:92%;text-align:center}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(70px);z-index:150;background:var(--green-dark);color:#fff;border:1px solid var(--green);padding:10px 20px;border-radius:999px;font-size:.88rem;transition:.4s;opacity:0;max-width:92%;text-align:center}
   .toast.show{transform:translateX(-50%);opacity:1}
 
-  /* ---------- Print (PDF) ---------- */
   #printArea{display:none}
   @media print{
     body *{visibility:hidden}
-    #printArea{display:block;visibility:visible;position:absolute;inset:0;padding:20px}
+    #printArea{display:block;visibility:visible;position:absolute;inset:0;padding:18px;color:#000;background:#fff}
     #printArea table{width:100%;border-collapse:collapse}
-    #printArea th,#printArea td{border:1px solid #999;padding:6px 8px;font-size:11px;text-align:right}
-    #printArea h2{margin-bottom:4px}
+    #printArea th,#printArea td{border:1px solid #888;padding:5px 7px;font-size:11px;text-align:left;color:#000}
   }
-
   #dash{display:none}
-  @media (max-width:1100px){.stats{grid-template-columns:repeat(4,1fr)}}
-  @media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}.topbar-in{gap:8px}.btn{font-size:.85rem;padding:8px 14px}}
+  @media (max-width:480px){.stats{grid-template-columns:repeat(4,1fr)}.st .v{font-size:1.1rem}}
 </style>
 </head>
 <body>
@@ -195,280 +189,298 @@
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <svg width="30" height="30" viewBox="0 0 64 64"><path d="M40 16a17 17 0 1 0 8 27A19 19 0 0 1 40 16z" fill="#f0c04a"/><circle cx="44" cy="22" r="3.5" fill="#f0c04a"/></svg>
+      <svg width="28" height="28" viewBox="0 0 64 64"><path d="M40 16a17 17 0 1 0 8 27A19 19 0 0 1 40 16z" fill="#f0c04a"/><circle cx="44" cy="22" r="3.5" fill="#f0c04a"/></svg>
     </div>
-    <h1>সুন্নাহ কেয়ার — অ্যাডমিন</h1>
-    <p>প্রো অর্ডার ম্যানেজমেন্ট প্যানেল</p>
+    <h1>Sunnah Care — Admin</h1>
+    <p>Order Management Panel</p>
+    <label>Staff Email <span style="color:var(--muted);font-weight:400">(employees only — boss leaves empty)</span></label>
+    <input type="text" id="email" placeholder="employee@email.com" autocapitalize="off" spellcheck="false">
+    <label>Password</label>
     <div class="pw-wrap">
-      <input type="password" id="pw" placeholder="অ্যাডমিন পাসওয়ার্ড" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="padding-right:44px">
-      <button type="button" id="pwEye" class="eye" title="দেখুন">👁</button>
+      <input type="password" id="pw" placeholder="••••••••" autocomplete="off" spellcheck="false">
+      <button type="button" id="pwEye" class="eye">👁</button>
     </div>
-    <div class="login-err" id="loginErr">❌ ভুল পাসওয়ার্ড!</div>
-    <div id="connErr" style="display:none;background:#fde8e8;border:1.5px solid #f5c6c0;color:#b91c1c;border-radius:12px;padding:12px 14px;margin-top:12px;font-size:.88rem;line-height:1.7;text-align:right">
-      ⚠️ <b>সার্ভারে সংযোগ নেই!</b><br>
-      আপনি সম্ভবত <b>ফাইল প্রিভিউ</b>তে খুলেছেন — এখানে লগইন কাজ করে না।<br>
-      ✅ লাইভ প্রিভিউ বাটন থেকে খুলুন: <b>“🔐 অ্যাডমিন প্যানেল — এখানে ক্লিক করুন”</b>
-      <button class="btn btn-sm btn-gold" id="demoBtn" style="margin-top:12px;width:100%">🎯 ডেমো মোডে পুরো প্যানেল দেখুন</button>
+    <div class="login-err" id="loginErr">❌ Wrong password!</div>
+    <div id="connErr">⚠️ <b>No server connection!</b> This is a file preview — open the panel via the Live Preview button.
+      <button class="btn btn-gold" id="demoBtn" style="margin-top:10px;width:100%">🎯 View Full Panel (Demo Mode)</button>
     </div>
-    <div id="connOk" style="display:none;color:#15803d;font-size:.85rem;margin-top:10px">🟢 সার্ভার কানেক্টেড — লগইন করুন</div>
-    <p class="hint">পাসওয়ার্ড: <b style="user-select:all">sunnah2026</b> (ইংরেজি ছোট হাতের অক্ষর)</p>
-    <button class="btn btn-gold" style="width:100%;margin-top:16px" id="loginBtn">🔓 লগইন করুন</button>
+    <div id="connOk">🟢 Server connected — please log in</div>
+    <p class="hint">Admin password: <b style="user-select:all">sunnah2026</b></p>
+    <button class="btn btn-gold" style="width:100%;margin-top:14px" id="loginBtn">🔓 Login</button>
   </div>
 </div>
 
 <!-- ============ DASHBOARD ============ -->
 <div id="dash">
   <div class="topbar">
-    <div class="wrap topbar-in">
-      <span class="lg"><svg width="23" height="23" viewBox="0 0 64 64"><path d="M40 16a17 17 0 1 0 8 27A19 19 0 0 1 40 16z" fill="#f0c04a"/><circle cx="44" cy="22" r="3.5" fill="#f0c04a"/></svg></span>
-      <div class="tb-title"><b>সুন্নাহ কেয়ার</b><small>ইয়ামিন 👋 · 📋 ম্যানেজার · <span class="live-dot"></span> লাইভ</small></div>
-      <span id="demoBanner" style="display:none;background:#fdf3d4;border:1.5px solid #e3cd92;color:#9a7b0e;font-weight:700;font-size:.8rem;border-radius:999px;padding:4px 12px;align-items:center">⚠️ ডেমো মোড — নমুনা ডেটা</span>
-      <span class="tb-chip" id="newChip"><span class="dot"></span> নতুন অর্ডার 🚩 <b id="newChipN"></b></span>
-      <span class="sp"></span>
-      <button class="btn btn-sm btn-ghost" id="themeBtn">🎨 থিম</button>
-      <button class="btn btn-sm btn-ghost" id="pdfBtn">🖨 পিডিএফ</button>
-      <button class="btn btn-sm btn-ghost" id="widgetBtn">🧩 উইজেট</button>
-      <button class="btn btn-sm btn-ghost" id="csvBtn">📄 CSV</button>
-      <button class="btn btn-sm btn-ghost" id="refreshBtn">🔄</button>
-      <button class="btn btn-sm" id="logoutBtn">লগআউট</button>
+    <div class="wrap">
+      <div class="brand-row">
+        <span class="lg"><svg width="22" height="22" viewBox="0 0 64 64"><path d="M40 16a17 17 0 1 0 8 27A19 19 0 0 1 40 16z" fill="#f0c04a"/><circle cx="44" cy="22" r="3.5" fill="#f0c04a"/></svg></span>
+        <div>
+          <b>Sunnah Care</b>
+          <span class="who"><i id="whoName">Yamin</i> 👋 · 📋 <span id="whoRole">Manager</span> ·<span class="live-dot"></span>Live</span>
+        </div>
+        <span class="newchip" id="newChip">🚩 New <b id="newChipN"></b></span>
+      </div>
+      <div class="hdr-btns">
+        <button class="btn btn-sm" id="reportBtn">📊 Reports<span class="rep-mini" id="repMini">S:0 · D:0</span></button>
+        <button class="btn btn-sm" id="pdfBtn">📄 PDF</button>
+        <button class="btn btn-sm" id="widgetBtn">🧩 Widgets</button>
+        <button class="btn btn-sm" id="darkBtn" title="Default dark theme">🌙</button>
+        <button class="btn btn-sm" id="themeBtn">🎨 Themes</button>
+        <button class="btn btn-sm" id="csvBtn">CSV</button>
+        <button class="btn btn-sm" id="refreshBtn">🔄</button>
+        <button class="btn btn-sm" id="staffBtn">👥 Staff</button>
+        <button class="btn btn-sm" id="logoutBtn" style="margin-left:auto">Logout</button>
+      </div>
     </div>
   </div>
 
   <div class="wrap">
+    <!-- TABS -->
     <div class="dtabs">
-      <button class="dtab on" data-d="today">আজ</button>
-      <button class="dtab" data-d="yesterday">গতকাল</button>
-      <button class="dtab" data-d="week">৭ দিন</button>
-      <button class="dtab" data-d="all">সব</button>
-      <button class="dtab" data-d="custom">কাস্টম</button>
+      <button class="dtab on" data-d="today">Today <span class="cnt" id="cntToday">0</span></button>
+      <button class="dtab" data-d="yesterday">Yesterday</button>
+      <button class="dtab" data-d="custom">Custom</button>
       <input type="date" id="dFrom"> <input type="date" id="dTo">
-      <span id="dateCount" style="font-size:.85rem;color:var(--muted)"></span>
     </div>
 
+    <!-- DAY WIDGETS -->
     <div class="stats" id="statsRow">
-      <div class="st" data-w="total"><div class="v" id="stTotal">০</div><div class="l">মোট</div></div>
-      <div class="st" data-w="pending"><div class="v" id="stPending">০</div><div class="l">পেন্ডিং</div></div>
-      <div class="st blue" data-w="confirmed"><div class="v" id="stConfirmed">০</div><div class="l">কনফার্মড</div></div>
-      <div class="st" data-w="shipping"><div class="v" id="stShipping">০</div><div class="l">শিপিং</div></div>
-      <div class="st" data-w="delivered"><div class="v" id="stDelivered">০</div><div class="l">ডেলিভারড</div></div>
-      <div class="st gold" data-w="revenue"><div class="v" id="stRevenue">৳০</div><div class="l">বিক্রি</div></div>
-      <div class="st red" data-w="return"><div class="v" id="stReturn">০</div><div class="l">রিটার্ন</div></div>
-      <div class="st red" data-w="cancel"><div class="v" id="stCancel">০</div><div class="l">বাতিল</div></div>
-      <div class="st" data-w="incomplete"><div class="v" id="stIncomplete" style="color:#64748b">০</div><div class="l">ইনকমপ্লিট</div></div>
+      <div class="st" data-w="total"><div class="v" id="stTotal">0</div><div class="l">Total</div></div>
+      <div class="st" data-w="confirmed"><div class="v" id="stConfirmed">0</div><div class="l">Confirmed</div></div>
+      <div class="st" data-w="shipping"><div class="v" id="stShipping">0</div><div class="l">Shipping</div></div>
+      <div class="st" data-w="manual"><div class="v" id="stManual">0</div><div class="l">Manual</div></div>
+      <div class="st" data-w="delivered"><div class="v" id="stDelivered">0</div><div class="l">Delivered</div></div>
+      <div class="st" data-w="cancel"><div class="v" id="stCancel">0</div><div class="l">Cancel</div></div>
+      <div class="st" data-w="return"><div class="v" id="stReturn">0</div><div class="l">Return</div></div>
+      <div class="st gold" data-w="revenue"><div class="v" id="stRevenue">৳0</div><div class="l">Revenue</div></div>
     </div>
 
+    <!-- SUMMARY -->
+    <div class="sum-head">Summary — <span id="sumTotal">0</span> orders</div>
     <div class="summary" id="summaryRow"></div>
 
+    <!-- ACTIONS -->
     <div class="actions">
-      <button class="btn btn-sm btn-gold" id="manualBtn">🚩 ম্যানুয়াল অর্ডার</button>
-      <button class="btn btn-sm" id="tgBtn">📤 টেলিগ্রামে পাঠান</button>
-      <button class="btn btn-sm btn-ghost" id="courierBtn">🚚 কুরিয়ার স্ট্যাটাস</button>
-      <button class="btn btn-sm btn-red" id="clearBtn">🗑 সব ডিলিট</button>
+      <button class="btn btn-sm btn-gold" id="manualBtn">🚩 Add Manual Report</button>
+      <button class="btn btn-sm" id="courierBtn">Courier Status</button>
+      <button class="btn btn-sm" id="tgBtn">📤 Send to Telegram</button>
+      <button class="btn btn-sm btn-red" id="clearBtn">🗑 Delete All</button>
     </div>
 
+    <!-- SEARCH -->
     <div class="ctrl">
-      <input type="text" id="search" placeholder="🔍 খুঁজুন: নাম, ফোন, ঠিকানা, পণ্য, কুরিয়ার...">
-      <select id="fStatus"><option value="">সব স্ট্যাটাস</option></select>
-      <div class="vtoggle">
-        <button id="viewCards" class="on">🗂 কার্ড</button>
-        <button id="viewTable">📋 টেবিল</button>
-      </div>
+      <input type="text" id="search" placeholder="🔍 Search: name, phone, address, product...">
+      <select id="fStatus"><option value="">All Status</option></select>
     </div>
 
+    <!-- ORDER LIST -->
     <div class="cards" id="cards"></div>
-    <div class="tbl-wrap" id="tblWrap">
-      <div class="tbl-scroll">
-        <table>
-          <thead><tr><th>আইডি</th><th>তারিখ</th><th>নাম</th><th>ফোন</th><th>ঠিকানা</th><th>পণ্য</th><th>দাম</th><th>কুরিয়ার</th><th>স্ট্যাটাস</th><th>IP</th><th></th></tr></thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </div>
-    </div>
-    <div class="empty" id="emptyState" style="display:none">
-      <span class="e-ic">📦</span>এই ফিল্টারে কোনো অর্ডার নেই
-    </div>
-    <div class="foot-note">🛡️ সুন্নাহ কেয়ার প্রো অ্যাডমিন • ডেটা: data/orders.json • পাসওয়ার্ড server.py-তে বদলান</div>
+    <div class="empty" id="emptyState" style="display:none"><span class="e-ic">📦</span>No orders match this filter</div>
+    <div class="foot-note">🛡️ Sunnah Care Admin • data/orders.json • password: server.py / ADMIN_PASSWORD</div>
   </div>
 </div>
 
 <!-- ============ MODALS ============ -->
-<div class="modal-ov" id="manualModal">
-  <div class="modal">
-    <h3>🚩 ম্যানুয়াল অর্ডার যোগ করুন</h3>
-    <label>নাম *</label><input id="mName" placeholder="কাস্টমারের নাম">
-    <label>ফোন *</label><input id="mPhone" placeholder="01XXXXXXXXX" inputmode="numeric">
-    <label>ঠিকানা</label><textarea id="mAddr" rows="2"></textarea>
-    <label>পণ্য</label>
-    <select id="mProduct">
-      <option value="নিউরো গার্ড ফুল কোর্স" data-p="1850">নিউরো গার্ড ফুল কোর্স — ৳১,৮৫০</option>
-      <option value="নিউরো গার্ড হাফ কোর্স" data-p="1050">নিউরো গার্ড হাফ কোর্স — ৳১,০৫০</option>
-    </select>
-    <label>নোট</label><input id="mNote" placeholder="যেমন: ফোনে অর্ডার নেওয়া হয়েছে">
-    <div class="mrow">
-      <button class="btn btn-sm btn-ghost" data-close>বাতিল</button>
-      <button class="btn btn-sm btn-gold" id="mSave">✅ যোগ করুন</button>
-    </div>
-  </div>
-</div>
+<div class="modal-ov" id="manualModal"><div class="modal">
+  <h3>🚩 Add Manual Report</h3>
+  <label>Name *</label><input id="mName" placeholder="Customer name">
+  <label>Phone *</label><input id="mPhone" placeholder="01XXXXXXXXX" inputmode="numeric">
+  <div class="hist-box" id="mHistory" style="display:none"></div>
+  <label>Address</label><textarea id="mAddr" rows="2"></textarea>
+  <label>Product</label>
+  <select id="mProduct">
+    <option value="Neuro Guard Full Course" data-p="1850">Neuro Guard Full Course — ৳1,850</option>
+    <option value="Neuro Guard Half Course" data-p="1050">Neuro Guard Half Course — ৳1,050</option>
+  </select>
+  <label>Note</label><input id="mNote" placeholder="e.g. ordered by phone">
+  <div class="mrow"><button class="btn" data-close>Cancel</button><button class="btn btn-gold" id="mSave">✅ Add</button></div>
+</div></div>
 
-<div class="modal-ov" id="tgModal">
-  <div class="modal">
-    <h3>📤 টেলিগ্রামে রিপোর্ট</h3>
-    <div class="tg-tip">
-      <b>সেটআপ (একবারই):</b><br>
-      ১. টেলিগ্রামে <b>@BotFather</b>-কে /newbot লিখে বট বানান → Token নিন<br>
-      ২. আপনার বটে একটা মেসেজ দিন, তারপর <b>@userinfobot</b> থেকে Chat ID নিন
-    </div>
-    <label>Bot Token</label><input id="tgToken" placeholder="123456:ABC-DEF...">
-    <label>Chat ID</label><input id="tgChat" placeholder="যেমন: 123456789">
-    <div class="mrow" style="justify-content:space-between">
-      <button class="btn btn-sm btn-ghost" id="tgSave">💾 সেভ</button>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-sm btn-ghost" data-close>বাতিল</button>
-        <button class="btn btn-sm btn-gold" id="tgSendToday">📤 আজকের রিপোর্ট</button>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="modal-ov" id="naModal"><div class="modal">
+  <h3 id="naTitle">📵 No Answer — Reason & Note</h3>
+  <div class="na-cust" id="naCust"></div>
+  <label style="display:block;font-weight:600;font-size:.85rem;margin:4px 0 2px;color:var(--ink2)">Reason (why no answer)</label>
+  <div class="na-chips" id="naChips"></div>
+  <label style="display:block;font-weight:600;font-size:.85rem;margin:8px 0 2px;color:var(--ink2)">📝 Note <span style="color:var(--muted);font-weight:400">(only you can see this)</span></label>
+  <textarea id="naNote" rows="3" placeholder="e.g. call again at 5 PM..."></textarea>
+  <div class="mrow"><button class="btn" data-close>Cancel</button><button class="btn btn-gold" id="naSave">✅ Save</button></div>
+</div></div>
 
-<div class="modal-ov" id="widgetModal">
-  <div class="modal">
-    <h3>🧩 উইজেট সাজান</h3>
-    <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">কোন কোন স্ট্যাট কার্ড দেখতে চান</p>
-    <div class="widget-list" id="widgetList"></div>
-    <div class="mrow">
-      <button class="btn btn-sm btn-gold" data-close style="width:100%">✅ ঠিক আছে</button>
-    </div>
-  </div>
-</div>
+<div class="modal-ov" id="editModal"><div class="modal">
+  <h3>✏️ Edit Order</h3>
+  <label>Name *</label><input id="eName" placeholder="Customer name">
+  <label>Phone *</label><input id="ePhone" placeholder="01XXXXXXXXX" inputmode="numeric">
+  <label>Address</label><textarea id="eAddr" rows="2"></textarea>
+  <label>Product</label>
+  <select id="eProduct">
+    <option value="Neuro Guard Full Course" data-p="1850">Neuro Guard Full Course — ৳1,850</option>
+    <option value="Neuro Guard Half Course" data-p="1050">Neuro Guard Half Course — ৳1,050</option>
+  </select>
+  <label>Price (৳)</label><input id="ePrice" type="number" inputmode="numeric">
+  <div class="mrow"><button class="btn" data-close>Cancel</button><button class="btn btn-gold" id="eSave">✅ Save Changes</button></div>
+</div></div>
 
-<div class="modal-ov" id="courierModal">
-  <div class="modal">
-    <h3>🚚 কুরিয়ার স্ট্যাটাস</h3>
-    <p style="font-size:.88rem;color:var(--muted);line-height:1.7">
-      প্রতিটি অর্ডার কার্ডে <b>“কুরিয়ার আইডি/স্ট্যাটাস”</b> ঘরে লিখুন (যেমন: <b>Steadfast-123456</b>) — এন্টার দিলেই সেভ।<br><br>
-      📦 কুরিয়ার তথ্য আছে এমন অর্ডার:
-    </p>
-    <div id="courierList" style="margin-top:10px"></div>
-    <div class="mrow"><button class="btn btn-sm btn-gold" data-close style="width:100%">✅ ঠিক আছে</button></div>
+<div class="modal-ov" id="tgModal"><div class="modal">
+  <h3>📤 Send to Telegram</h3>
+  <div class="tg-tip"><b>Setup:</b> 1. Message @BotFather → /newbot → copy the Token 2. Message your bot once, then get your Chat ID from @userinfobot</div>
+  <label>Bot Token</label><input id="tgToken" placeholder="123456:ABC-DEF...">
+  <label>Chat ID</label><input id="tgChat" placeholder="123456789">
+  <div class="mrow" style="justify-content:space-between">
+    <button class="btn" id="tgSave">💾 Save</button>
+    <div style="display:flex;gap:8px"><button class="btn" data-close>Cancel</button><button class="btn btn-gold" id="tgSendToday">📤 Send</button></div>
   </div>
-</div>
+</div></div>
 
-<div class="modal-ov" id="themeModal">
-  <div class="modal" style="width:min(560px,100%)">
-    <h3>🎨 থিম বাছাই করুন — ১৫টি কালার কম্বিনেশন</h3>
-    <p style="font-size:.85rem;color:var(--muted);margin-bottom:12px">যেটায় ক্লিক করবেন সাথে সাথে পুরো প্যানেল সেটায় বদলে যাবে — পছন্দেরটা সেভ হয়ে থাকবে</p>
-    <div id="themeGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
-    <div class="mrow" style="justify-content:space-between">
-      <button class="btn btn-sm btn-ghost" id="themeReset">↺ ডিফল্টে ফেরান</button>
-      <button class="btn btn-sm btn-gold" data-close>✅ ঠিক আছে</button>
-    </div>
+<div class="modal-ov" id="widgetModal"><div class="modal">
+  <h3>🧩 Arrange Widgets</h3>
+  <div class="widget-list" id="widgetList"></div>
+  <div class="mrow"><button class="btn btn-gold" data-close style="width:100%">✅ Done</button></div>
+</div></div>
+
+<div class="modal-ov" id="courierModal"><div class="modal">
+  <h3>🚚 Courier Status</h3>
+  <div id="courierList"></div>
+  <div class="mrow"><button class="btn btn-gold" data-close style="width:100%">✅ Done</button></div>
+</div></div>
+
+<div class="modal-ov" id="staffModal"><div class="modal">
+  <h3>👥 Staff Accounts</h3>
+  <p style="font-size:.78rem;color:var(--muted);margin-bottom:10px;line-height:1.6">Add an employee with their email &amp; password — they log in with <b>Staff Email + Password</b>. Staff can manage orders but cannot delete all orders or manage staff.</p>
+  <div id="staffList"></div>
+  <label>Add New Staff</label>
+  <input id="uName" placeholder="Employee name" style="margin-bottom:6px">
+  <input id="uEmail" placeholder="employee@email.com" style="margin-bottom:6px" autocapitalize="off" spellcheck="false">
+  <input id="uPass" placeholder="Password (4+ characters)" style="margin-bottom:6px">
+  <button class="btn btn-gold" id="uAdd" style="width:100%">➕ Add Staff Account</button>
+  <div class="mrow"><button class="btn btn-gold" data-close style="width:100%">✅ Done</button></div>
+</div></div>
+
+<div class="modal-ov" id="themeModal"><div class="modal" style="width:min(540px,100%)">
+  <h3>🎨 Choose Theme <span style="font-size:.72rem;color:var(--muted);font-weight:400">(all dark mode)</span></h3>
+  <div class="theme-grid" id="themeGrid"></div>
+  <div class="mrow" style="justify-content:space-between">
+    <button class="btn" id="themeReset">↺ Reset</button>
+    <button class="btn btn-gold" data-close>✅ Done</button>
   </div>
-</div>
+</div></div>
 
 <div id="printArea"></div>
 <div class="toast" id="toast"></div>
 
 <script>
-/* ================= Config ================= */
-const STATUS_BN = {incomplete:'ইনকমপ্লিট',pending:'পেন্ডিং',confirmed:'কনফার্মড',shipping:'শিপিং',delivered:'ডেলিভারড',
-                   hold:'হোল্ড',cancel:'বাতিল',return:'রিটার্ন',noanswer:'নো আনসার',refunded:'রিফান্ডেড'};
+const STATUS_EN = {incomplete:'Incomplete',pending:'Pending',confirmed:'Confirmed',shipping:'Shipping',delivered:'Delivered',
+                   hold:'Hold',cancel:'Cancel',return:'Return',noanswer:'No Answer',refunded:'Refunded'};
 const STATUS_CLS = {incomplete:'b-incomplete',pending:'b-pending',confirmed:'b-confirmed',shipping:'b-shipping',delivered:'b-delivered',
                     hold:'b-hold',cancel:'b-cancel',return:'b-return',noanswer:'b-noanswer',refunded:'b-refunded'};
-const MONTHS = ['জানু','ফেব','মার্চ','এপ্রি','মে','জুন','জুলা','আগ','সেপ','অক্টো','নভে','ডিসে'];
-const bn = s => String(s).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+const HIST_CLS = {incomplete:'inc',pending:'pend',confirmed:'conf',shipping:'ship',delivered:'del',hold:'bad',cancel:'bad',return:'bad',noanswer:'inc',refunded:'bad'};
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const bn2en = s => String(s).replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d));
-const bnMoney = n => '৳' + bn(Number(n||0).toLocaleString('en-US'));
-function bnDate(ts){
-  const [d, t] = String(ts).split(' '); if(!d) return bn(ts);
-  const [y,m,dd] = d.split('-');
-  let [hh,mm] = (t||'00:00').split(':');
+const money = n => '৳' + Number(n || 0).toLocaleString('en-US');
+function enDate(ts){
+  const [d, t] = String(ts).split(' '); if(!d) return ts;
+  const [y, m, dd] = d.split('-');
+  let [hh, mm] = (t || '00:00').split(':');
   let h = +hh; const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
-  return bn(dd) + ' ' + MONTHS[+m-1] + ', ' + bn(y) + ', ' + bn(String(h).padStart(2,'0')) + ':' + bn(mm) + ' ' + ap;
+  return dd + ' ' + MONTHS[+m-1] + ' ' + y + ', ' + String(h).padStart(2,'0') + ':' + mm + ' ' + ap;
 }
 const $ = id => document.getElementById(id);
-function store(k,v){ try{ if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v); }catch(e){} }
+function store(k,v){ try{ if(v === null) localStorage.removeItem(k); else localStorage.setItem(k,v); }catch(e){} }
 function readStore(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
 let KEY = readStore('ng_admin_key') || '';
+let me = {name:'Yamin', role:'admin'};
+try{ me = JSON.parse(readStore('ng_me')) || me; }catch(e){}
+let orders = [], settings = {blocked_ips:[], telegram:{}}, staffUsers = [];
+let seenIds = new Set();
+let state = {dateMode:'today', status:''};
+let naId = null, naNoteOnly = false, naReason = '';
+const NA_REASONS = ['📞 Follow-up needed','📵 Number busy','✂️ Call cut off','🔇 Not receiving','⏰ Call later'];
+
 let DEMO = false;
 const DEMO_SETTINGS = {blocked_ips:['103.12.44.9'], telegram:{token:'',chat:''}};
+let DEMO_USERS = [{name:'Rakib', email:'rakib@gmail.com'}];
 let DEMO_ORDERS = [];
 function demoOrders(){
   const day = off => { const d = new Date(); d.setDate(d.getDate()-off); return d.toISOString().slice(0,10); };
   const t = (off,h,m) => day(off) + ' ' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
   return [
-    {id:900000001, ts:t(0,10,42), name:'মোহিউদ্দিন', phone:'01814782417', address:'চৌগাছা, যশোর', product:'নিউরো গার্ড হাফ কোর্স', price:1050, status:'pending', ip:'103.195.140.14', courier:'', note:'', manual:false},
-    {id:900000002, ts:t(0,9,15), name:'শফিকুল ইসলাম', phone:'01723560324', address:'সাথিয়া, পাবনা', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'confirmed', ip:'103.31.179.201', courier:'Steadfast-100234', note:'', manual:false},
-    {id:900000003, ts:t(0,8,5), name:'মোঃ মনিরুজ্জামান', phone:'01303932415', address:'বাদামতলী, ঢাকা', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'shipping', ip:'103.113.174.179', courier:'Pathao-889211', note:'', manual:false},
-    {id:900000004, ts:t(1,21,30), name:'MD কামরুল হাসান', phone:'01815906239', address:'শাহীন একাডেমির দক্ষিণে, ঢাকা', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'delivered', ip:'58.145.187.129', courier:'Steadfast-998877', note:'', manual:false},
-    {id:900000005, ts:t(1,16,2), name:'রুবিনা আক্তার', phone:'01933445566', address:'দাউদকান্দি, কুমিল্লা', product:'নিউরো গার্ড হাফ কোর্স', price:1050, status:'noanswer', ip:'37.111.230.9', courier:'', note:'৩ বার কল করা হয়েছে', manual:false},
-    {id:900000006, ts:t(2,13,44), name:'আব্দুল হালিম', phone:'01612233445', address:'সদর, খুলনা', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'delivered', ip:'43.230.107.55', courier:'Pathao-871204', note:'', manual:false},
-    {id:900000007, ts:t(3,11,20), name:'জাহিদা বেগম', phone:'01555667788', address:'কালিয়া, নড়াইল', product:'নিউরো গার্ড হাফ কোর্স', price:1050, status:'return', ip:'115.127.31.7', courier:'Steadfast-990122', note:'ঠিকানা ভুল', manual:false},
-    {id:900000008, ts:t(4,17,8), name:'মোঃ সাইফুল', phone:'01788990011', address:'পাবনা সদর', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'refunded', ip:'119.30.38.90', courier:'Pathao-830119', note:'', manual:false},
-    {id:900000009, ts:t(0,11,55), name:'হাসিনা আক্তার (ফোনে)', phone:'01822334455', address:'যশোর সদর', product:'নিউরো গার্ড ফুল কোর্স', price:1850, status:'confirmed', ip:'ম্যানুয়াল', courier:'', note:'ফোনে অর্ডার নেওয়া হয়েছে', manual:true},
-    {id:900000010, ts:t(5,10,10), name:'আনোয়ার হোসেন', phone:'01444556677', address:'ঝিকরগাছা, যশোর', product:'নিউরো গার্ড হাফ কোর্স', price:1050, status:'cancel', ip:'103.108.144.7', courier:'', note:'পণ্য লাগবে না', manual:false}
+    {id:900000001, ts:t(0,10,42), name:'Mohiuddin', phone:'01814782417', address:'Chowgachha, Jashore', product:'Neuro Guard Half Course', price:1050, status:'pending', ip:'103.195.140.14', courier:'', note:'', manual:false},
+    {id:900000002, ts:t(0,9,15), name:'Shafiqul Islam', phone:'01723560324', address:'Shathia, Pabna', product:'Neuro Guard Full Course', price:1850, status:'confirmed', ip:'103.31.179.201', courier:'Steadfast-100234', note:'', manual:false},
+    {id:900000003, ts:t(0,8,5), name:'Md. Moniruzzaman', phone:'01303932415', address:'', product:'Neuro Guard Full Course', price:1850, status:'shipping', ip:'103.113.174.179', courier:'Pathao-889211', note:'', manual:false},
+    {id:900000004, ts:t(0,7,30), name:'Hasina Akter (by phone)', phone:'01822334455', address:'Jashore Sadar', product:'Neuro Guard Full Course', price:1850, status:'confirmed', ip:'Manual', courier:'', note:'Ordered by phone', manual:true},
+    {id:900000005, ts:t(1,21,30), name:'MD Kamrul Hasan', phone:'01815906239', address:'South of Shahin Academy, Dhaka', product:'Neuro Guard Full Course', price:1850, status:'delivered', ip:'58.145.187.129', courier:'Steadfast-998877', note:'', manual:false},
+    {id:900000006, ts:t(1,16,2), name:'Rubina Akter', phone:'01933445566', address:'Daudkandi, Cumilla', product:'Neuro Guard Half Course', price:1050, status:'noanswer', ip:'37.111.230.9', courier:'', note:'📵 Number busy — called 3 times', manual:false},
+    {id:900000007, ts:t(2,13,44), name:'Abdul Halim', phone:'01612233445', address:'Sadar, Khulna', product:'Neuro Guard Full Course', price:1850, status:'delivered', ip:'43.230.107.55', courier:'Pathao-871204', note:'', manual:false},
+    {id:900000008, ts:t(3,11,20), name:'Zahida Begum', phone:'01555667788', address:'Kalia, Narail', product:'Neuro Guard Half Course', price:1050, status:'return', ip:'115.127.31.7', courier:'Steadfast-990122', note:'Wrong address', manual:false},
+    {id:900000009, ts:t(4,17,8), name:'Md. Saiful', phone:'01788990011', address:'Pabna Sadar', product:'Neuro Guard Full Course', price:1850, status:'refunded', ip:'119.30.38.90', courier:'Pathao-830119', note:'', manual:false},
+    {id:900000010, ts:t(5,10,10), name:'Anowar Hossain', phone:'01444556677', address:'Jhikargachha, Jashore', product:'Neuro Guard Half Course', price:1050, status:'cancel', ip:'103.108.144.7', courier:'', note:'Does not want it', manual:false}
   ];
 }
-let orders = [], settings = {blocked_ips:[], telegram:{}};
-let seenIds = new Set();
-let state = {dateMode:'today', status:'', view:'cards'};
 
-/* ---------- toast ---------- */
 let toastT;
-function toast(msg){
-  const t = $('toast'); t.innerHTML = msg; t.classList.add('show');
-  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3000);
-}
+function toast(msg){ const t = $('toast'); t.innerHTML = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3000); }
 
-/* ---------- কানেকশন চেক (পেজ খোলার সাথে সাথে) ---------- */
+/* connection check */
 (async () => {
   const p = await fetch('/api/ping').catch(() => null);
   if(p && p.ok){ $('connOk').style.display = 'block'; }
-  else {
-    $('connErr').style.display = 'block';
-    $('loginBtn').disabled = true; $('loginBtn').style.opacity = .5;
-  }
+  else { $('connErr').style.display = 'block'; $('loginBtn').disabled = true; $('loginBtn').style.opacity = .5; }
 })();
 
-/* ---------- login ---------- */
+/* login */
 async function tryLogin(){
-  KEY = bn2en($('pw').value).trim();
-  const r = await fetch('/api/orders', {headers:{'X-Admin-Key':KEY}}).catch(() => null);
-  if(r && r.ok){
-    store('ng_admin_key', KEY);
-    $('loginScreen').style.display = 'none'; $('dash').style.display = 'block';
-    loadOrders();
-  } else if(r && r.status === 401){
-    $('loginErr').style.display = 'block';
-  } else {
-    $('connErr').style.display = 'block';
+  const email = $('email').value.trim().toLowerCase();
+  const pass = bn2en($('pw').value).trim();
+  if(email){
+    const r = await fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({email, password: pass})}).catch(() => null);
+    const d = r ? await r.json().catch(() => null) : null;
+    if(d && d.ok){
+      KEY = d.key; me = {name: d.name, role: d.role};
+      store('ng_admin_key', KEY); store('ng_me', JSON.stringify(me));
+      enterDash(); loadOrders();
+    } else if(r && r.status === 401){ $('loginErr').textContent = '❌ Wrong email or password!'; $('loginErr').style.display = 'block'; }
+    else { $('connErr').style.display = 'block'; }
+    return;
   }
+  const r = await fetch('/api/orders', {headers:{'X-Admin-Key': pass}}).catch(() => null);
+  if(r && r.ok){
+    KEY = pass; store('ng_admin_key', KEY);
+    enterDash(); loadOrders();
+  } else if(r && r.status === 401){ $('loginErr').style.display = 'block'; }
+  else { $('connErr').style.display = 'block'; }
+}
+function enterDash(){
+  $('loginScreen').style.display = 'none'; $('dash').style.display = 'block';
+  $('whoName').textContent = me.name;
+  $('whoRole').textContent = me.role === 'staff' ? 'Staff' : 'Manager';
+  if(me.role === 'staff'){ $('staffBtn').style.display = 'none'; $('clearBtn').style.display = 'none'; }
 }
 $('loginBtn').addEventListener('click', tryLogin);
 $('pw').addEventListener('keydown', e => { if(e.key === 'Enter') tryLogin(); });
-$('pwEye').addEventListener('click', () => {
-  const p = $('pw'); p.type = p.type === 'password' ? 'text' : 'password';
-});
+$('email').addEventListener('keydown', e => { if(e.key === 'Enter') tryLogin(); });
+$('pwEye').addEventListener('click', () => { const p = $('pw'); p.type = p.type === 'password' ? 'text' : 'password'; });
+$('logoutBtn').addEventListener('click', () => { store('ng_admin_key', null); store('ng_me', null); location.reload(); });
 $('demoBtn').addEventListener('click', () => {
-  DEMO = true; DEMO_ORDERS = demoOrders();
-  $('loginScreen').style.display = 'none'; $('dash').style.display = 'block';
-  $('demoBanner').style.display = 'inline-flex';
-  loadOrders();
-  toast('🎯 ডেমো মোড চালু — নমুনা ডেটা দেখানো হচ্ছে');
+  DEMO = true; DEMO_ORDERS = demoOrders(); enterDash(); loadOrders();
+  toast('🎯 Demo mode — sample data');
 });
-$('logoutBtn').addEventListener('click', () => { store('ng_admin_key', null); location.reload(); });
 
-/* ---------- api helper ---------- */
+/* api */
 async function api(path, body){
   if(DEMO){
-    if(path === '/api/orders') return {ok:true, orders: DEMO_ORDERS, settings: DEMO_SETTINGS};
+    if(path === '/api/orders') return {ok:true, orders: DEMO_ORDERS, settings: DEMO_SETTINGS, me:{name:'Yamin',role:'admin'}};
+    if(path === '/api/users/list') return {ok:true, users: DEMO_USERS};
+    if(path === '/api/users/add'){ if(!$('uName').value.trim()) return {ok:false}; DEMO_USERS.push({name:$('uName').value.trim(), email:$('uEmail').value.trim()}); return {ok:true}; }
+    if(path === '/api/users/delete'){ DEMO_USERS = DEMO_USERS.filter(u => u.email !== body.email); return {ok:true}; }
     if(path === '/api/orders/status'){ const o = DEMO_ORDERS.find(x=>x.id===+body.id); if(o) o.status = body.status; return {ok:true}; }
     if(path === '/api/orders/update'){ const o = DEMO_ORDERS.find(x=>x.id===+body.id); if(o) Object.assign(o, body); return {ok:true}; }
     if(path === '/api/orders/delete'){ DEMO_ORDERS = DEMO_ORDERS.filter(x=>x.id!==+body.id); return {ok:true}; }
     if(path === '/api/orders/add'){
       const o = {id: 900000000 + Math.floor(Math.random()*899999), ts: new Date().toISOString().slice(0,16),
                  name:body.name, phone:body.phone, address:body.address||'', product:body.product||'',
-                 price:+body.price||0, status:'pending', ip:'ম্যানুয়াল', courier:'', note:body.note||'', manual:true};
+                 price:+body.price||0, status:'pending', ip:'Manual', courier:'', note:body.note||'', manual:true};
       DEMO_ORDERS.unshift(o); return {ok:true, id:o.id};
     }
     if(path === '/api/orders/clear'){ DEMO_ORDERS = []; return {ok:true}; }
@@ -479,7 +491,7 @@ async function api(path, body){
       DEMO_SETTINGS.blocked_ips = bl; return {ok:true, blocked:bl};
     }
     if(path === '/api/settings'){ Object.assign(DEMO_SETTINGS.telegram, body); return {ok:true}; }
-    if(path === '/api/telegram/send') return {ok:false, msg:'ডেমো মোডে টেলিগ্রাম যায় না'};
+    if(path === '/api/telegram/send') return {ok:false, msg:'Telegram not available in demo'};
     return {ok:false};
   }
   const url = path.startsWith('/') ? path : '/' + path;
@@ -492,40 +504,36 @@ async function api(path, body){
   try { return await r.json(); } catch(e){ return {ok:false}; }
 }
 
-/* ---------- data ---------- */
 async function loadOrders(silent){
   const d = await api('/api/orders');
-  if(!d || !d.ok){ if(!silent) toast('❌ সার্ভারে সংযোগ ব্যর্থ'); return; }
+  if(!d || !d.ok){ if(!silent) toast('❌ Server connection failed'); return; }
+  if(d.me){ me = d.me; store('ng_me', JSON.stringify(me)); enterDash(); }
   settings = d.settings || settings;
   const fresh = d.orders.filter(o => !seenIds.has(o.id) && o.status !== 'incomplete');
   if(seenIds.size && fresh.length){
     $('newChip').style.display = 'inline-flex';
-    $('newChipN').textContent = ' ' + bn(fresh.length) + 'টি';
-    toast('🔔 ' + bn(fresh.length) + ' টি নতুন অর্ডার এসেছে!');
+    $('newChipN').textContent = ' ' + fresh.length;
+    toast('🔔 ' + fresh.length + ' new order' + (fresh.length>1?'s':'') + '!');
   }
   d.orders.forEach(o => seenIds.add(o.id));
   orders = d.orders;
   if(settings.telegram){ $('tgToken').value = settings.telegram.token || ''; $('tgChat').value = settings.telegram.chat || ''; }
   render();
 }
-$('refreshBtn').addEventListener('click', () => { loadOrders(); toast('🔄 রিফ্রেশ হয়েছে'); });
+$('refreshBtn').addEventListener('click', () => { loadOrders(); toast('🔄 Refreshed'); });
 setInterval(() => loadOrders(true), 15000);
 
-/* ---------- date filter ---------- */
+/* dates */
 function dateRange(){
   const now = new Date();
   const fmt = d => d.toISOString().slice(0,10);
-  const m = state.dateMode;
-  if(m === 'today')   return [fmt(now), fmt(now)];
-  if(m === 'yesterday'){ const y = new Date(now); y.setDate(y.getDate()-1); return [fmt(y), fmt(y)]; }
-  if(m === 'week'){ const w = new Date(now); w.setDate(w.getDate()-6); return [fmt(w), fmt(now)]; }
-  if(m === 'custom')  return [$('dFrom').value || '2000-01-01', $('dTo').value || '2100-01-01'];
-  return ['2000-01-01','2100-01-01'];
+  if(state.dateMode === 'today') return [fmt(now), fmt(now)];
+  if(state.dateMode === 'yesterday'){ const y = new Date(now); y.setDate(y.getDate()-1); return [fmt(y), fmt(y)]; }
+  return [$('dFrom').value || '2000-01-01', $('dTo').value || '2100-01-01'];
 }
 document.querySelectorAll('.dtab').forEach(t => t.addEventListener('click', () => {
   document.querySelectorAll('.dtab').forEach(x => x.classList.remove('on'));
-  t.classList.add('on');
-  state.dateMode = t.dataset.d;
+  t.classList.add('on'); state.dateMode = t.dataset.d;
   const cust = state.dateMode === 'custom';
   $('dFrom').style.display = $('dTo').style.display = cust ? 'inline-block' : 'none';
   render();
@@ -533,7 +541,6 @@ document.querySelectorAll('.dtab').forEach(t => t.addEventListener('click', () =
 $('dFrom').addEventListener('change', render);
 $('dTo').addEventListener('change', render);
 
-/* ---------- filtering ---------- */
 function filtered(){
   const [from, to] = dateRange();
   const q = $('search').value.trim().toLowerCase();
@@ -545,191 +552,244 @@ function filtered(){
     return true;
   });
 }
-
-/* ---------- render ---------- */
 function esc(s){ const d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; }
+
+/* render */
 function render(){
   const list = filtered();
   const today = new Date().toISOString().slice(0,10);
-
   const cnt = s => list.filter(o => o.status === s).length;
-  $('stTotal').textContent = bn(list.length);
-  $('stPending').textContent = bn(cnt('pending'));
-  $('stConfirmed').textContent = bn(cnt('confirmed'));
-  $('stShipping').textContent = bn(cnt('shipping'));
-  $('stDelivered').textContent = bn(cnt('delivered'));
-  $('stReturn').textContent = bn(cnt('return'));
-  $('stCancel').textContent = bn(cnt('cancel'));
-  $('stIncomplete').textContent = bn(cnt('incomplete'));
-  $('stRevenue').textContent = bnMoney(list.filter(o => o.status === 'delivered').reduce((a,o) => a + (+o.price||0), 0));
-  $('dateCount').textContent = '· ' + bn(list.length) + 'টি অর্ডার';
 
-  const stuckCnt = orders.filter(o => o.status === 'pending' && String(o.ts).slice(0,10) < today).length;
-  const rows = [['','সব', orders.length],
-    ...Object.keys(STATUS_BN).map(s => [s, STATUS_BN[s], orders.filter(o=>o.status===s).length]),
-                ['__manual','ম্যানুয়াল', orders.filter(o=>o.manual).length],
-                ['__stuck','⏱ আটকে আছে', stuckCnt]];
+  $('cntToday').textContent = orders.filter(o => String(o.ts).slice(0,10) === today).length;
+  $('stTotal').textContent = list.length;
+  $('stConfirmed').textContent = cnt('confirmed');
+  $('stShipping').textContent = cnt('shipping');
+  $('stManual').textContent = list.filter(o => o.manual).length;
+  $('stDelivered').textContent = cnt('delivered');
+  $('stCancel').textContent = cnt('cancel');
+  $('stReturn').textContent = cnt('return');
+  $('stRevenue').textContent = money(list.filter(o => o.status === 'delivered').reduce((a,o) => a + (+o.price||0), 0));
+  $('repMini').textContent = 'S:' + list.length + ' · D:' + cnt('delivered');
+  $('sumTotal').textContent = orders.length;
+
+  const stuck = orders.filter(o => o.status === 'pending' && String(o.ts).slice(0,10) < today).length;
+  const rows = [['','All', orders.length],
+    ['incomplete','Incomplete', orders.filter(o=>o.status==='incomplete').length],
+    ...Object.keys(STATUS_EN).filter(s=>s!=='incomplete').map(s => [s, STATUS_EN[s], orders.filter(o=>o.status===s).length]),
+    ['__manual','Manual', orders.filter(o=>o.manual).length],
+    ['__stuck','⏱ Stuck', stuck]];
   $('summaryRow').innerHTML = rows.map(([v,l,c]) =>
-    '<span class="chip ' + (state.status===v?'on':'') + '" data-st="' + esc(v) + '">' + esc(l) + ' <b>' + bn(c) + '</b></span>').join('');
+    '<span class="chip ' + (state.status===v?'on':'') + '" data-st="' + esc(v) + '"><b>' + c + '</b>' + esc(l) + '</span>').join('');
   $('summaryRow').querySelectorAll('.chip').forEach(c =>
     c.addEventListener('click', () => { state.status = state.status === c.dataset.st ? '' : c.dataset.st;
       $('fStatus').value = state.status.startsWith('__') ? '' : state.status; render(); }));
 
   const cur = $('fStatus').value;
-  $('fStatus').innerHTML = '<option value="">সব স্ট্যাটাস</option>' +
-    Object.keys(STATUS_BN).map(s => '<option value="' + s + '" ' + (s===cur?'selected':'') + '>' + STATUS_BN[s] + '</option>').join('');
+  $('fStatus').innerHTML = '<option value="">All Status</option>' +
+    Object.keys(STATUS_EN).map(s => '<option value="' + s + '" ' + (s===cur?'selected':'') + '>' + STATUS_EN[s] + '</option>').join('');
 
   $('cards').innerHTML = '';
-  $('tbody').innerHTML = '';
   $('emptyState').style.display = list.length ? 'none' : 'block';
-  $('cards').style.display = state.view === 'cards' ? 'grid' : 'none';
-  $('tblWrap').style.display = state.view === 'table' ? 'block' : 'none';
-
-  list.forEach((o, i) => {
-    if(state.view === 'cards') $('cards').appendChild(cardEl(o, i));
-    else $('tbody').insertAdjacentHTML('beforeend', rowEl(o));
-  });
-  if(state.view === 'table') bindTable();
+  list.forEach((o, i) => $('cards').appendChild(cardEl(o, i)));
 }
 
+/* order card */
 function cardEl(o, i){
   const el = document.createElement('div');
   el.className = 'ocard';
-  el.style.animationDelay = Math.min(i*50, 500) + 'ms';
+  el.style.animationDelay = Math.min(i*45, 450) + 'ms';
   const blocked = (settings.blocked_ips||[]).includes(o.ip);
+  const q = (st, label) => '<button class="qbtn ' + (o.status===st?'on ':'') + (st==='cancel'?'q-cancel':st==='delivered'?'q-delivered':st==='hold'?'q-hold':'') + '" data-act="q" data-st="' + st + '" data-id="' + o.id + '">' + label + '</button>';
   el.innerHTML =
-    '<div class="oc-top">' +
-      '<span class="badge ' + (STATUS_CLS[o.status]||'b-pending') + '">' + (STATUS_BN[o.status]||o.status) + '</span>' +
-      '<b>' + esc(o.name) + '</b>' +
-      (o.manual ? ' <span class="badge b-manual">ম্যানুয়াল</span>' : '') +
-      '<span class="oc-date">' + bnDate(o.ts) + '</span>' +
+    '<span class="badge ' + (STATUS_CLS[o.status]||'b-pending') + '">' + (o.manual ? 'Manual · ' : '') + (STATUS_EN[o.status]||o.status) + '</span>' +
+    '<span class="o-price">' + money(o.price) + '</span>' +
+    '<div class="o-name">' + esc(o.name) + '</div>' +
+    '<div class="o-phone"><a href="tel:' + esc(o.phone) + '">' + esc(o.phone) + '</a></div>' +
+    '<div class="o-addr">' + (esc(o.address) || '—') + '</div>' +
+    '<div class="o-prod"><b>' + esc(o.product) + '</b><span class="sep">•</span>' + enDate(o.ts) + '</div>' +
+    (o.note ? '<div class="o-note">📝 ' + esc(o.note) + '</div>' : '') +
+    '<div class="o-ip">🌐 ' + esc(o.ip) + (blocked ? ' · 🚫 Blocked' : '') + '</div>' +
+    '<div class="o-quick">' +
+      q('confirmed','✅ Confirm') + q('shipping','🚚 Shipping') + q('delivered','📦 Delivered') + q('cancel','❌ Cancel') + q('hold','⏸ Hold') +
+      '<button class="qbtn na ' + (o.status==='noanswer'?'on':'') + '" data-act="na" data-id="' + o.id + '">📵 No Answer ▾</button>' +
     '</div>' +
-    '<div class="oc-phone"><a href="tel:' + esc(o.phone) + '">' + bn(o.phone) + '</a></div>' +
-    '<div class="oc-meta"><b>' + esc(o.product) + '</b> · ' + bnMoney(o.price) + '</div>' +
-    '<div class="oc-addr">📍 ' + (esc(o.address) || '—') + '</div>' +
-    (o.note ? '<div class="oc-note">📝 ' + esc(o.note) + '</div>' : '') +
-    '<div class="oc-ip">🌐 ' + esc(o.ip) + (blocked ? ' · 🚫 ব্লকড' : '') + '</div>' +
-    '<input class="cour-in" data-id="' + o.id + '" value="' + esc(o.courier||'') + '" placeholder="🚚 কুরিয়ার আইডি/স্ট্যাটাস...">' +
-    '<div class="oc-ctrl">' +
-      '<select data-id="' + o.id + '">' +
-        Object.keys(STATUS_BN).map(s => '<option value="' + s + '" ' + (s===o.status?'selected':'') + '>' + STATUS_BN[s] + '</option>').join('') +
+    '<div class="o-btns">' +
+      '<button class="btn btn-sm" data-act="edit" data-id="' + o.id + '">✏️ Edit</button>' +
+      '<button class="btn btn-sm" data-act="note" data-id="' + o.id + '">📝 Note</button>' +
+      '<button class="btn btn-sm" data-act="block" data-id="' + o.id + '" data-ip="' + esc(o.ip) + '">' + (blocked ? '✅ Unblock' : '🚫 IP Block') + '</button>' +
+      '<button class="btn btn-sm" data-act="conv" data-id="' + o.id + '">🔄 Convert</button>' +
+      '<select data-id="' + o.id + '" title="Status">' +
+        Object.keys(STATUS_EN).map(s => '<option value="' + s + '" ' + (s===o.status?'selected':'') + '>' + STATUS_EN[s] + '</option>').join('') +
       '</select>' +
-      '<button class="mini" data-act="conv" data-id="' + o.id + '" title="ফুল ↔ হাফ">🔄</button>' +
-      '<button class="mini" data-act="block" data-id="' + o.id + '" data-ip="' + esc(o.ip) + '" title="' + (blocked?'IP আনব্লক':'IP ব্লক') + '">' + (blocked?'✅':'🚫') + '</button>' +
-      '<button class="mini" data-act="del" data-id="' + o.id + '" title="ডিলিট">🗑</button>' +
+      '<button class="btn btn-sm btn-red" data-act="del" data-id="' + o.id + '">🗑</button>' +
     '</div>';
-  el.querySelectorAll('select[data-id]').forEach(s =>
-    s.addEventListener('change', () => setStatus(s.dataset.id, s.value)));
-  el.querySelectorAll('.cour-in').forEach(c =>
-    c.addEventListener('change', () => updateOrder(c.dataset.id, {courier: c.value})));
-  el.querySelectorAll('.mini').forEach(b => b.addEventListener('click', () => cardAction(b)));
+  el.querySelectorAll('select[data-id]').forEach(s => s.addEventListener('change', () => setStatus(s.dataset.id, s.value)));
+  el.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => cardAction(b)));
   return el;
 }
-function rowEl(o){
-  return '<tr>' +
-    '<td class="o-id">#' + (o.id % 100000) + '</td>' +
-    '<td>' + bnDate(o.ts) + '</td>' +
-    '<td><b>' + esc(o.name) + '</b> ' + (o.manual?'<span class="badge b-manual">ম্যানুয়াল</span>':'') + '</td>' +
-    '<td class="oc-phone"><a href="tel:' + esc(o.phone) + '">' + bn(o.phone) + '</a></td>' +
-    '<td style="white-space:normal;min-width:150px">' + esc(o.address) + '</td>' +
-    '<td>' + esc(o.product) + '</td>' +
-    '<td><b>' + bnMoney(o.price) + '</b></td>' +
-    '<td>' + (esc(o.courier) || '—') + '</td>' +
-    '<td><span class="badge ' + (STATUS_CLS[o.status]||'b-pending') + '">' + (STATUS_BN[o.status]||o.status) + '</span></td>' +
-    '<td class="o-id">' + esc(o.ip) + '</td>' +
-    '<td><button class="btn btn-sm btn-ghost" data-act="del" data-id="' + o.id + '">🗑</button></td>' +
-  '</tr>';
-}
-function bindTable(){
-  $('tbody').querySelectorAll('[data-act="del"]').forEach(b =>
-    b.addEventListener('click', () => delOrder(b.dataset.id)));
-}
 
-/* ---------- actions ---------- */
 async function setStatus(id, status){
   const d = await api('/api/orders/status', {id: +id, status});
-  if(d && d.ok){ const o = orders.find(x => x.id === +id); if(o) o.status = status; render(); toast('✅ ' + STATUS_BN[status]); }
-  else toast('❌ আপডেট ব্যর্থ');
+  if(d && d.ok){ const o = orders.find(x => x.id === +id); if(o) o.status = status; render(); toast('✅ ' + STATUS_EN[status]); }
+  else toast('❌ Update failed');
 }
 async function updateOrder(id, patch){
   const d = await api('/api/orders/update', Object.assign({id: +id}, patch));
-  if(d && d.ok){ Object.assign(orders.find(x => x.id === +id) || {}, patch); toast('💾 সেভ হয়েছে'); }
-  else toast('❌ সেভ ব্যর্থ');
+  if(d && d.ok){ Object.assign(orders.find(x => x.id === +id) || {}, patch); toast('💾 Saved'); }
+  else toast('❌ Save failed');
 }
 async function delOrder(id){
-  if(!confirm('অর্ডারটি ডিলিট করবেন?')) return;
+  if(!confirm('Delete this order?')) return;
   const d = await api('/api/orders/delete', {id: +id});
-  if(d && d.ok){ orders = orders.filter(x => x.id !== +id); render(); toast('🗑 ডিলিট হয়েছে'); }
+  if(d && d.ok){ orders = orders.filter(x => x.id !== +id); render(); toast('🗑 Deleted'); }
 }
 async function cardAction(btn){
   const id = btn.dataset.id;
   if(btn.dataset.act === 'del') return delOrder(id);
+  if(btn.dataset.act === 'q') return setStatus(id, btn.dataset.st);
+  if(btn.dataset.act === 'na') return openNAModal(id, false);
+  if(btn.dataset.act === 'note') return openNAModal(id, true);
+  if(btn.dataset.act === 'edit') return openEditModal(id);
   if(btn.dataset.act === 'conv'){
     const o = orders.find(x => x.id === +id); if(!o) return;
-    const toFull = !String(o.product).includes('ফুল');
-    await updateOrder(id, toFull ? {product:'নিউরো গার্ড ফুল কোর্স', price:1850}
-                                 : {product:'নিউরো গার্ড হাফ কোর্স', price:1050});
+    const toFull = !String(o.product).includes('Full') && !String(o.product).includes('ফুল');
+    await updateOrder(id, toFull ? {product:'Neuro Guard Full Course', price:1850} : {product:'Neuro Guard Half Course', price:1050});
     loadOrders(true); return;
   }
   if(btn.dataset.act === 'block'){
     const ip = btn.dataset.ip;
     const blocked = (settings.blocked_ips||[]).includes(ip);
     const d = await api('/api/ipblock', {ip, action: blocked ? 'unblock' : 'block'});
-    if(d && d.ok){ settings.blocked_ips = d.blocked; render();
-      toast(blocked ? '✅ IP আনব্লক হয়েছে' : '🚫 IP ব্লক হয়েছে — এই IP থেকে আর অর্ডার আসবে না'); }
+    if(d && d.ok){ settings.blocked_ips = d.blocked; render(); toast(blocked ? '✅ IP unblocked' : '🚫 IP blocked'); }
   }
 }
 
-/* ---------- controls ---------- */
 $('search').addEventListener('input', render);
 $('fStatus').addEventListener('change', e => { state.status = e.target.value; render(); });
-$('viewCards').addEventListener('click', () => { state.view='cards'; $('viewCards').classList.add('on'); $('viewTable').classList.remove('on'); render(); });
-$('viewTable').addEventListener('click', () => { state.view='table'; $('viewTable').classList.add('on'); $('viewCards').classList.remove('on'); render(); });
 
-/* ---------- modals ---------- */
-document.querySelectorAll('[data-close]').forEach(b =>
-  b.addEventListener('click', () => b.closest('.modal-ov').classList.remove('show')));
-document.querySelectorAll('.modal-ov').forEach(ov =>
-  ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); }));
+/* modals */
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('.modal-ov').classList.remove('show')));
+document.querySelectorAll('.modal-ov').forEach(ov => ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); }));
 
-/* ম্যানুয়াল অর্ডার */
-$('manualBtn').addEventListener('click', () => $('manualModal').classList.add('show'));
+/* manual report + customer history */
+$('manualBtn').addEventListener('click', () => { $('mHistory').style.display = 'none'; $('manualModal').classList.add('show'); });
+$('mPhone').addEventListener('input', () => {
+  const p = bn2en($('mPhone').value).replace(/\D/g,'');
+  const box = $('mHistory');
+  if(p.length < 6){ box.style.display = 'none'; return; }
+  const tail = p.slice(-10);
+  const hist = orders.filter(o => String(o.phone).replace(/\D/g,'').endsWith(tail));
+  if(!hist.length){
+    box.style.display = 'block';
+    box.innerHTML = '<div class="hh">📜 Customer History</div><div style="color:var(--green-2)">✅ New customer — no previous orders</div>';
+    return;
+  }
+  box.style.display = 'block';
+  box.innerHTML = '<div class="hh">📜 Customer History — ' + hist.length + ' order' + (hist.length>1?'s':'') + '</div>' +
+    hist.slice().reverse().map(o =>
+      '<div class="hist-row"><span>' + esc(o.product) + ' · ' + enDate(o.ts) + '</span>' +
+      '<span class="hs ' + (HIST_CLS[o.status]||'pend') + '">' + (STATUS_EN[o.status]||o.status) + '</span></div>' +
+      (o.note ? '<div class="hist-row" style="color:var(--muted)">📝 ' + esc(o.note) + '</div>' : '')
+    ).join('');
+});
 $('mSave').addEventListener('click', async () => {
   const name = $('mName').value.trim(), phone = bn2en($('mPhone').value).trim();
-  if(!name || !/^(\+?88)?01[3-9]\d{8}$/.test(phone)){ toast('⚠️ নাম ও সঠিক ফোন নম্বর দিন'); return; }
+  if(!name || !/^(\+?88)?01[3-9]\d{8}$/.test(phone)){ toast('⚠️ Enter a valid name & phone'); return; }
   const sel = $('mProduct');
-  const d = await api('/api/orders/add', {
-    name, phone, address: $('mAddr').value.trim(), product: sel.value,
-    price: +sel.selectedOptions[0].dataset.p, note: $('mNote').value.trim()
-  });
-  if(d && d.ok){
-    $('manualModal').classList.remove('show');
-    ['mName','mPhone','mAddr','mNote'].forEach(x => $(x).value = '');
-    await loadOrders(true); toast('🚩 ম্যানুয়াল অর্ডার যোগ হয়েছে');
-  } else toast('❌ যোগ করা ব্যর্থ');
+  const d = await api('/api/orders/add', {name, phone, address: $('mAddr').value.trim(), product: sel.value,
+    price: +sel.selectedOptions[0].dataset.p, note: $('mNote').value.trim()});
+  if(d && d.ok){ $('manualModal').classList.remove('show'); ['mName','mPhone','mAddr','mNote'].forEach(x => $(x).value = '');
+    $('mHistory').style.display = 'none'; await loadOrders(true); toast('🚩 Manual report added'); }
+  else toast('❌ Failed');
 });
 
-/* টেলিগ্রাম */
+/* no answer + note modal */
+function openNAModal(id, noteOnly){
+  const o = orders.find(x => x.id === +id); if(!o) return;
+  naId = +id; naNoteOnly = !!noteOnly; naReason = '';
+  $('naTitle').textContent = noteOnly ? '📝 Write Note' : '📵 No Answer — Reason & Note';
+  $('naCust').innerHTML = '<div class="n">' + esc(o.name) + ' · ' + (STATUS_EN[o.status]||o.status) + '</div><div class="p">' + esc(o.phone) + '</div>';
+  $('naChips').style.display = noteOnly ? 'none' : 'flex';
+  $('naChips').innerHTML = NA_REASONS.map(r => '<span class="na-chip" data-r="' + esc(r) + '">' + r + '</span>').join('');
+  $('naChips').querySelectorAll('.na-chip').forEach(c => c.addEventListener('click', () => {
+    naReason = naReason === c.dataset.r ? '' : c.dataset.r;
+    $('naChips').querySelectorAll('.na-chip').forEach(x => x.classList.toggle('on', x.dataset.r === naReason));
+  }));
+  $('naNote').value = o.note || '';
+  $('naModal').classList.add('show');
+}
+$('naSave').addEventListener('click', async () => {
+  const o = orders.find(x => x.id === naId); if(!o) return;
+  const txt = $('naNote').value.trim();
+  const note = [naReason, txt].filter(Boolean).join(' — ');
+  if(!naNoteOnly){
+    const d = await api('/api/orders/status', {id: naId, status: 'noanswer'});
+    if(!(d && d.ok)){ toast('❌ Failed'); return; }
+    o.status = 'noanswer';
+  }
+  if(note !== (o.note || '')) await updateOrder(naId, {note});
+  $('naModal').classList.remove('show');
+  render();
+  toast(naNoteOnly ? '📝 Note saved' : '📵 No answer saved');
+});
+
+/* edit order — fix name / phone / address / product / price */
+let editId = null;
+function openEditModal(id){
+  const o = orders.find(x => x.id === +id); if(!o) return;
+  editId = +id;
+  $('eName').value = o.name || '';
+  $('ePhone').value = o.phone || '';
+  $('eAddr').value = o.address || '';
+  const sel = $('eProduct');
+  let val = String(o.product || '');
+  if(/ফুল|Full/i.test(val)) val = 'Neuro Guard Full Course';
+  else if(/হাফ|Half/i.test(val)) val = 'Neuro Guard Half Course';
+  if(![...sel.options].some(op => op.value === val) && val){
+    const op = document.createElement('option');
+    op.value = String(o.product); op.textContent = String(o.product) + ' — ৳' + (o.price || 0);
+    sel.appendChild(op);
+  }
+  sel.value = val;
+  $('ePrice').value = o.price || 0;
+  $('editModal').classList.add('show');
+}
+$('eProduct').addEventListener('change', () => {
+  const op = $('eProduct').selectedOptions[0];
+  if(op && op.dataset.p) $('ePrice').value = op.dataset.p;
+});
+$('eSave').addEventListener('click', async () => {
+  const name = $('eName').value.trim(), phone = bn2en($('ePhone').value).trim();
+  const addr = $('eAddr').value.trim(), prod = $('eProduct').value, price = +$('ePrice').value || 0;
+  if(!name || !/^(\+?88)?01[3-9]\d{8}$/.test(phone)){ toast('⚠️ Enter a valid name & phone'); return; }
+  const d = await api('/api/orders/update', {id: editId, name, phone, address: addr, product: prod, price});
+  if(d && d.ok){
+    Object.assign(orders.find(x => x.id === editId) || {}, {name, phone, address: addr, product: prod, price});
+    $('editModal').classList.remove('show');
+    render(); toast('✏️ Order updated');
+  } else toast('❌ Update failed');
+});
+
+/* telegram */
 $('tgBtn').addEventListener('click', () => $('tgModal').classList.add('show'));
 $('tgSave').addEventListener('click', async () => {
   const d = await api('/api/settings', {token: $('tgToken').value.trim(), chat: $('tgChat').value.trim()});
-  toast(d && d.ok ? '💾 টেলিগ্রাম সেটিংস সেভ হয়েছে' : '❌ সেভ ব্যর্থ');
+  toast(d && d.ok ? '💾 Saved' : '❌ Failed');
 });
 $('tgSendToday').addEventListener('click', async () => {
   const d = await api('/api/telegram/send', {scope: 'today'});
-  toast(d && d.ok ? '📤 টেলিগ্রামে পাঠানো হয়েছে ✅' : '❌ ' + ((d && d.msg) || 'ব্যর্থ — সেটিংস চেক করুন'));
+  toast(d && d.ok ? '📤 Sent to Telegram ✅' : '❌ ' + ((d && d.msg) || 'Failed'));
 });
 
-/* উইজেট */
-const WIDGETS = {total:'মোট', pending:'পেন্ডিং', confirmed:'কনফার্মড', shipping:'শিপিং',
-                 delivered:'ডেলিভারড', revenue:'বিক্রি', return:'রিটার্ন', cancel:'বাতিল', incomplete:'ইনকমপ্লিট'};
+/* widgets */
+const WIDGETS = {total:'Total', confirmed:'Confirmed', shipping:'Shipping', manual:'Manual',
+                 delivered:'Delivered', cancel:'Cancel', return:'Return', revenue:'Revenue'};
 function getWidgets(){ try { return JSON.parse(readStore('ng_widgets')) || Object.keys(WIDGETS); } catch(e){ return Object.keys(WIDGETS); } }
 function applyWidgets(){
   let on = [...$('widgetList').querySelectorAll('input:checked')].map(c => c.value);
   if(!on.length) on = getWidgets();
   try{ localStorage.setItem('ng_widgets', JSON.stringify(on)); }catch(e){}
-  document.querySelectorAll('.st[data-w]').forEach(s =>
-    s.style.display = on.includes(s.dataset.w) ? 'block' : 'none');
+  document.querySelectorAll('.st[data-w]').forEach(s => s.style.display = on.includes(s.dataset.w) ? 'block' : 'none');
 }
 $('widgetBtn').addEventListener('click', () => {
   $('widgetList').innerHTML = Object.keys(WIDGETS).map(k =>
@@ -739,90 +799,126 @@ $('widgetBtn').addEventListener('click', () => {
 });
 applyWidgets();
 
-/* ---------- ১৫টি থিম ---------- */
+/* courier */
+$('courierBtn').addEventListener('click', () => {
+  $('courierList').innerHTML = orders.length
+    ? orders.slice(0, 60).map(o =>
+      '<div class="cour-row"><span><b>' + esc(o.name) + '</b> · ' + esc(o.phone) + '</span>' +
+      '<input data-id="' + o.id + '" value="' + esc(o.courier||'') + '" placeholder="Courier ID..."></div>').join('')
+    : '<p style="color:var(--muted);font-size:.86rem">No orders</p>';
+  $('courierList').querySelectorAll('input').forEach(inp =>
+    inp.addEventListener('change', () => updateOrder(inp.dataset.id, {courier: inp.value})));
+  $('courierModal').classList.add('show');
+});
+
+/* delete all (boss only) */
+$('clearBtn').addEventListener('click', async () => {
+  if(!confirm('⚠️ ALL orders will be deleted! Are you sure?')) return;
+  const d = await api('/api/orders/clear', {});
+  if(d && d.ok){ orders = []; seenIds = new Set(); render(); toast('🗑 All orders deleted'); }
+  else toast('❌ Only the boss can delete all orders');
+});
+
+/* staff accounts (boss only) */
+function renderStaff(){
+  $('staffList').innerHTML = staffUsers.length
+    ? staffUsers.map(u =>
+      '<div class="user-row"><span><span class="un">' + esc(u.name) + '</span><br><span class="ue">' + esc(u.email) + '</span></span>' +
+      '<button class="btn btn-sm btn-red" data-del="' + esc(u.email) + '">🗑</button></div>').join('')
+    : '<p style="color:var(--muted);font-size:.86rem">No staff accounts yet</p>';
+  $('staffList').querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
+    if(!confirm('Remove this staff account?')) return;
+    const d = await api('/api/users/delete', {email: b.dataset.del});
+    if(d && d.ok){ staffUsers = staffUsers.filter(u => u.email !== b.dataset.del); renderStaff(); toast('🗑 Staff removed'); }
+    else toast('❌ Failed');
+  }));
+}
+$('staffBtn').addEventListener('click', async () => {
+  const d = await api('/api/users/list');
+  staffUsers = (d && d.users) || [];
+  renderStaff();
+  ['uName','uEmail','uPass'].forEach(x => $(x).value = '');
+  $('staffModal').classList.add('show');
+});
+$('uAdd').addEventListener('click', async () => {
+  const name = $('uName').value.trim(), email = $('uEmail').value.trim().toLowerCase(), pass = $('uPass').value.trim();
+  if(!name || !email.includes('@') || pass.length < 4){ toast('⚠️ Name, valid email & 4+ char password'); return; }
+  const d = await api('/api/users/add', {name, email, password: pass});
+  if(d && d.ok){ staffUsers.push({name, email}); renderStaff(); ['uName','uEmail','uPass'].forEach(x => $(x).value = ''); toast('🚩 Staff account added'); }
+  else toast('❌ ' + ((d && d.msg) || 'Failed'));
+});
+
+/* CSV + PDF + reports */
+$('csvBtn').addEventListener('click', () => {
+  if(DEMO){ toast('🎯 No CSV in demo mode'); return; }
+  window.open('/api/orders.csv?key=' + encodeURIComponent(KEY), '_blank');
+});
+function printReport(list, title){
+  $('printArea').innerHTML =
+    '<h2>Sunnah Care — ' + title + '</h2>' +
+    '<p>Total: ' + list.length + ' · Revenue (delivered): ' + money(list.filter(o=>o.status==='delivered').reduce((a,o)=>a+(+o.price||0),0)) + '</p>' +
+    '<table><thead><tr><th>Name</th><th>Phone</th><th>Address</th><th>Product</th><th>Price</th><th>Status</th><th>Courier</th></tr></thead><tbody>' +
+    list.map(o => '<tr><td>' + esc(o.name) + '</td><td>' + esc(o.phone) + '</td><td>' + esc(o.address) + '</td><td>' + esc(o.product) + '</td><td>' + o.price + '</td><td>' + (STATUS_EN[o.status]||o.status) + '</td><td>' + esc(o.courier||'') + '</td></tr>').join('') +
+    '</tbody></table>';
+  window.print();
+}
+$('pdfBtn').addEventListener('click', () => {
+  const list = filtered();
+  if(!list.length){ toast('No orders to print'); return; }
+  printReport(list, 'Order Report');
+});
+$('reportBtn').addEventListener('click', () => printReport(filtered(), 'Report'));
+
+/* themes — all dark, calm & soothing (+ ⚡ super lightning) */
 const THEMES = {
- t1:{n:'🌿 সবুজ-সোনালি', v:['#17a47b','#0a5c44','#073d2e','#e8f4ee','#d9a521','#f0c04a','#f6faf7','#dfe9e2']},
- t2:{n:'🌲 গাঢ় অরণ্য', v:['#2e7d32','#1b5e20','#0d3311','#e6f2e6','#c8a415','#e6c832','#f4faf4','#d8e8d8']},
- t3:{n:'🍍 টিল-অ্যাম্বার', v:['#14b8a6','#0d9488','#0f5148','#e3f6f3','#f59e0b','#fbbf24','#f5fbfa','#d5ecea']},
- t4:{n:'🌊 ওশান ব্লু', v:['#3b82f6','#1d4ed8','#16309b','#e8f0fd','#f59e0b','#fbbf24','#f6f9fe','#dbe6f8']},
- t5:{n:'👑 রয়েল ইন্ডিগো', v:['#6366f1','#4f46e5','#2e2a86','#ecedfd','#f59e0b','#fbbf24','#f7f8fe','#e0e0f9']},
- t6:{n:'🟣 বেগুনি-সোনালি', v:['#a855f7','#7c3aed','#4c1d95','#f3e8fd','#fbbf24','#fde68a','#fbf7fe','#eadcf8']},
- t7:{n:'🌺 ম্যাজেন্টা', v:['#ec4899','#be185d','#701a3a','#fde8f0','#f59e0b','#fbbf24','#fef7fa','#f8dce7']},
- t8:{n:'🌹 রোজ পিংক', v:['#fb7185','#e11d48','#7f1d2d','#ffe9ec','#f59e0b','#fcd34d','#fff8f8','#f9dde0']},
- t9:{n:'🍒 মেরুন-গোল্ড', v:['#dc2626','#991b1b','#5b1010','#fbe9e9','#f59e0b','#fbbf24','#fdf7f7','#f2d9d9']},
- t10:{n:'🍊 কমলা-হলুদ', v:['#fb923c','#ea580c','#7c2d12','#fdeee3','#facc15','#fde047','#fff9f2','#f5e0cf']},
- t11:{n:'☕ কফি-ব্রাউন', v:['#b45309','#92400e','#4a2306','#f7ede0','#d9a521','#f0c04a','#faf6f0','#e8d9c8']},
- t12:{n:'❄️ স্লেট-স্কাই', v:['#475569','#334155','#1e293b','#eef2f7','#38bdf8','#7dd3fc','#f5f8fb','#d9e1ea']},
- t13:{n:'🖤 মনো ক্লাসিক', v:['#6b7280','#374151','#111827','#eef0f3','#9ca3af','#d1d5db','#f7f8f9','#e2e5e9']},
- t14:{n:'🥑 অলিভ-লাইম', v:['#84cc16','#4d7c0f','#2a4011','#eef6dd','#f59e0b','#fbbf24','#fbfdf3','#e3ecc9']},
- t15:{n:'🥇 গোল্ড-টিল', v:['#d4a017','#b8860b','#5c4406','#faf3df','#0f766e','#14b8a6','#fdfaf2','#eadfc0']}
+ t16:{n:'🌙 Emerald Night', v:['#4ade80','#2fbd8b','#134a36','#12291f','#f0c04a','#f5d67a','#0b1512','#274033','#16241d','#101d17','#eef7f1','#cfe3d7','#8fa89a']},
+ t15:{n:'⚡ Super Lightning', v:['#38e1ff','#0ea5e9','#0b3a5c','#0e2740','#fde047','#fef08a','#070b14','#1c2d4a','#0e1626','#0a1120','#eaf4ff','#c3d9f5','#7d93b8']},
+ t1:{n:'🌿 Sage', v:['#a8d8b9','#7fbf99','#2e5a41','#15291f','#e6d8a8','#f0e6c2','#0b1310','#28453a','#121f19','#0d1713','#e9f2ec','#cfe5d8','#8faa9b']},
+ t2:{n:'🌊 Ocean Calm', v:['#a3cbf5','#7aa8e0','#1e3a5f','#122840','#f0e2b0','#f7edcc','#0a121e','#243b5c','#101c2e','#0b1524','#e9f1fa','#cddff2','#8ba2c0']},
+ t3:{n:'☁️ Cloud', v:['#d5dde6','#aab8c8','#39434f','#20262e','#e9dcae','#f2e8c8','#0f1216','#333c47','#161b21','#101418','#eef2f6','#d5dde6','#96a2b0']},
+ t4:{n:'🌸 Sakura', v:['#f5c1ce','#e39cb0','#5f2e3e','#331a24','#f0e0b0','#f7ecc9','#130d11','#4d2837','#22141c','#170f14','#faeef2','#f0d5dd','#bb98a5']},
+ t5:{n:'💜 Lavender', v:['#d3c5f7','#b1a0e8','#3d3370','#221d45','#ecd9a0','#f5e9c5','#100e1b','#372f63','#1a1730','#131027','#f0edfa','#dbd4f4','#9d94c0']},
+ t6:{n:'🌅 Sunset', v:['#f8c9a3','#ecab7c','#6b3a20','#3c2113','#f2df9e','#f9edc4','#150e09','#54321d','#251710','#190f0a','#faefe4','#f2d8c2','#bd9d85']},
+ t7:{n:'❄️ Ice Blue', v:['#b5e8f2','#8ccfdd','#1d4a56','#102a32','#e8e5b8','#f1efcd','#081114','#25494f','#0f2026','#0a161a','#e8f5f8','#cfe8ee','#89a8b0']},
+ t8:{n:'🍃 Mint', v:['#aef0d3','#83d6b2','#2a5c46','#163528','#ecdfae','#f4ecc9','#091510','#2a4d3d','#122019','#0c1512','#e9f6ee','#d0e9da','#8cab9b']},
+ t9:{n:'🍯 Honey', v:['#f7dd9d','#e5c273','#5c471a','#33280f','#e8c86a','#f2df9e','#131007','#4a3d1c','#241e0d','#181307','#f9f3e0','#e9dbb5','#b3a683']},
+ t10:{n:'🌑 Pure Black', v:['#e8ebee','#b9c2cc','#3a3f46','#22262c','#d6d9dd','#e5e8eb','#0a0b0d','#31353b','#141618','#0f1113','#f0f2f4','#d9dee3','#98a0a8']},
+ t11:{n:'🍇 Grape', v:['#dfc2f2','#c098dd','#4a2a63','#2a1738','#eedda6','#f6ecc9','#110a16','#452a58','#201230','#160b1f','#f4edf9','#e2d2f0','#a68fbe']},
+ t12:{n:'🌧 Rain', v:['#c3cfd9','#9cb0bf','#2e3a44','#1a222a','#dfcf9e','#eddfb5','#0b0f13','#333f4a','#151d24','#10161c','#e9eff4','#d0dbe3','#8b9aa7']},
+ t13:{n:'🌕 Moonlight', v:['#cbd6f2','#a4b4dc','#2e3860','#1a2040','#e6d9a8','#f0e7c4','#0b0d16','#2c3358','#141830','#0e1122','#eaeefa','#d4dcf2','#929ec2']},
+ t14:{n:'🌲 Deep Forest', v:['#9ed4a8','#78b586','#274d2e','#142b1a','#dfd0a0','#eae0bd','#0a120c','#26402c','#122115','#0c150f','#e7f1e9','#cfe2d2','#8baa92']}
 };
-const THEME_KEYS = ['--green-2','--green','--green-dark','--green-soft','--gold','--gold-2','--cream','--line'];
+const THEME_KEYS = ['--green-2','--green','--green-dark','--green-soft','--gold','--gold-2','--cream','--line','--card','--card2','--ink','--ink2','--muted'];
 function applyTheme(id){
   const t = THEMES[id]; if(!t) return;
-  const s = document.documentElement.style;
-  t.v.forEach((c, i) => s.setProperty(THEME_KEYS[i], c));
+  t.v.forEach((c, i) => document.documentElement.style.setProperty(THEME_KEYS[i], c));
   store('ng_theme', id);
   document.querySelectorAll('.theme-opt').forEach(b => b.style.borderColor = b.dataset.t === id ? 'var(--gold)' : 'var(--line)');
 }
+$('darkBtn').addEventListener('click', () => { applyTheme('t16'); toast('🌙 Default Emerald Night'); });
 $('themeBtn').addEventListener('click', () => {
   $('themeGrid').innerHTML = Object.keys(THEMES).map(k => {
     const t = THEMES[k];
-    return '<button class="theme-opt" data-t="' + k + '" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;font-size:.88rem;font-weight:600;color:var(--ink);transition:.2s">' +
-      t.v.slice(0,4).map(c => '<span style="width:14px;height:14px;border-radius:50%;background:' + c + ';display:inline-block;border:1px solid rgba(0,0,0,.08)"></span>').join('') +
+    return '<button class="theme-opt" data-t="' + k + '">' +
+      t.v.slice(0,4).map(c => '<span class="d" style="background:' + c + '"></span>').join('') +
       '<span>' + t.n + '</span></button>';
   }).join('');
-  const cur = readStore('ng_theme') || 't1';
+  const cur = readStore('ng_theme') || 't16';
   $('themeGrid').querySelectorAll('.theme-opt').forEach(b => {
     b.addEventListener('click', () => applyTheme(b.dataset.t));
     if(b.dataset.t === cur) b.style.borderColor = 'var(--gold)';
   });
   $('themeModal').classList.add('show');
 });
-$('themeReset').addEventListener('click', () => applyTheme('t1'));
-(function(){ const t = readStore('ng_theme'); if(t && THEMES[t]) applyTheme(t); })();
+$('themeReset').addEventListener('click', () => applyTheme('t16'));
+(function(){ const t = readStore('ng_theme') || 't16'; if(THEMES[t]) applyTheme(t); })();
 
-/* কুরিয়ার */
-$('courierBtn').addEventListener('click', () => {
-  const withC = orders.filter(o => o.courier);
-  $('courierList').innerHTML = withC.length
-    ? withC.map(o => '<div style="display:flex;justify-content:space-between;gap:8px;padding:8px 12px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:6px;font-size:.88rem"><span><b>' + esc(o.name) + '</b> · ' + bn(o.phone) + '</span><span style="color:var(--green)"><b>' + esc(o.courier) + '</b></span></div>').join('')
-    : '<p style="color:var(--muted);font-size:.88rem">এখনো কোনো কুরিয়ার তথ্য নেই</p>';
-  $('courierModal').classList.add('show');
-});
-
-/* সব ডিলিট */
-$('clearBtn').addEventListener('click', async () => {
-  if(!confirm('⚠️ সব অর্ডার ডিলিট হবে! নিশ্চিত?')) return;
-  const d = await api('/api/orders/clear', {});
-  if(d && d.ok){ orders = []; seenIds = new Set(); render(); toast('🗑 সব অর্ডার ডিলিট হয়েছে'); }
-});
-
-/* CSV */
-$('csvBtn').addEventListener('click', () => {
-  if(DEMO){ toast('🎯 ডেমো মোড — লাইভ প্রিভিউতে CSV পাবেন'); return; }
-  window.open('/api/orders.csv?key=' + encodeURIComponent(KEY), '_blank');
-});
-
-/* PDF (প্রিন্ট) */
-$('pdfBtn').addEventListener('click', () => {
-  const list = filtered();
-  if(!list.length){ toast('প্রিন্ট করার মতো অর্ডার নেই'); return; }
-  $('printArea').innerHTML =
-    '<h2>সুন্নাহ কেয়ার — অর্ডার রিপোর্ট</h2>' +
-    '<p>তারিখ: ' + bn(new Date().toLocaleDateString('en-GB')) + ' · মোট: ' + bn(list.length) + ' টি · বিক্রি: ' +
-    bnMoney(list.filter(o=>o.status==='delivered').reduce((a,o)=>a+(+o.price||0),0)) + '</p>' +
-    '<table><thead><tr><th>নাম</th><th>ফোন</th><th>ঠিকানা</th><th>পণ্য</th><th>দাম</th><th>স্ট্যাটাস</th><th>কুরিয়ার</th></tr></thead><tbody>' +
-    list.map(o => '<tr><td>' + esc(o.name) + '</td><td>' + esc(o.phone) + '</td><td>' + esc(o.address) + '</td><td>' + esc(o.product) + '</td><td>' + o.price + '</td><td>' + (STATUS_BN[o.status]||o.status) + '</td><td>' + esc(o.courier||'') + '</td></tr>').join('') +
-    '</tbody></table>';
-  window.print();
-});
-
-/* ---------- অটো লগইন ---------- */
+/* auto login */
 (async () => {
   if(KEY){
     const r = await fetch('/api/orders', {headers:{'X-Admin-Key':KEY}}).catch(() => null);
-    if(r && r.ok){ $('loginScreen').style.display = 'none'; $('dash').style.display = 'block'; loadOrders(); }
+    if(r && r.ok){ enterDash(); loadOrders(); }
+    else if(r && r.status === 401){ store('ng_admin_key', null); store('ng_me', null); KEY = ''; }
   }
 })();
 </script>
